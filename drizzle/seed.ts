@@ -1,8 +1,3 @@
-import { db } from '../src/lib/db/drizzle';
-import { posts, users } from '../src/lib/db/schemas';
-import testUsers from './seed-data/users';
-import testPosts from './seed-data/posts';
-
 console.log('🚀 Starting seeding...');
 
 seed()
@@ -15,7 +10,4 @@ seed()
 		process.exit(1);
 	});
 
-async function seed() {
-	await db.insert(users).values(testUsers);
-	await db.insert(posts).values(testPosts);
-}
+async function seed() {}

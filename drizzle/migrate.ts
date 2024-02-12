@@ -1,5 +1,5 @@
-import { migrate } from 'drizzle-orm/postgres-js/migrator';
-import { db } from '../src/lib/db/drizzle';
+import { migrate } from 'drizzle-orm/libsql/migrator';
+import { db } from '../src/lib/server/db/drizzle';
 
 console.log('🚀 Starting migrations...');
 
