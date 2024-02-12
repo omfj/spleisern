@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize]
+
+env:
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:14.10
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: ./.github/actions/pnpm-install
+
+      - run: pnpm db:check
+      - run: pnpm db:migrate
+
+      - run: pnpm typecheck
+      - run: pnpm format:check
+      # - run: pnpm lint
+
+      - run: pnpm build
