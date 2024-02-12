@@ -27,6 +27,10 @@ export const createProductStore = () => {
 		members.push(member);
 	};
 
+	const removeMember = (member: string) => {
+		members = members.filter((curr) => curr !== member);
+	};
+
 	const toggleMemberToProduct = (name: string, member: string) => {
 		const product = products.find((product) => product.name === name);
 		if (!product) return;
@@ -71,5 +75,6 @@ export const createProductStore = () => {
 		removeProduct,
 		toggleMemberToProduct,
 		totalForMember,
+		removeMember,
 	};
 };
