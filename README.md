@@ -1,25 +1,19 @@
-# Simple Svelte
+# Spleiser'n
 
-This is a simple Svelte project that can be used as a template for other projects.
+For å lett gjøre opp for seg etter å ha handlet mat sammen.
 
-Also has a simple self-made auth. Uses (drizzle-orm)[https://github.com/drizzle-team/drizzle-orm] for the database.
+## Utivkling
 
-## How to use
+### Kjøre lokalt
 
-1. Clone the repo
-2. Run `pnpm install`
-3. Run `pnpm db:migrate`
-4. Run `pnpm dev`
-5. Open `localhost:5173` in your browser
-6. Register a new user
-7. Login
-8. ...
-9. Profit!
-
-## Deploy
-
-I recommend using [Fly.io](https://fly.io) to deploy this project. It's a great service and it's free/cheap for small projects.
+1. Klon repoet
+2. `pnpm install`
+3. `pnpm dev`
+4. Åpne [http://localhost:5173](http://localhost:5173) for å se appen i nettleseren.
 
 ## TODO
 
-- Display posts and form to create posts
+- Mulig het for å logge inn og lagre data
+- Oversikt over tidligere spleiser
+- Generere QR-kode for spleisen
+- Generere kvittering for spleisen
