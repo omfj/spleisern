@@ -13,7 +13,7 @@ For å lett gjøre opp for seg etter å ha handlet mat sammen.
 
 ## TODO
 
-- Mulig het for å logge inn og lagre data
+- Mulighet for å logge inn og lagre data
 - Oversikt over tidligere spleiser
 - Generere QR-kode for spleisen
 - Generere kvittering for spleisen
