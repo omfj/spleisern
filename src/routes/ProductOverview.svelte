@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { createProductStore } from '$lib/stores/product.svelte';
+	import { check } from 'drizzle-orm/mysql-core';
 
 	type Props = {
 		productStore: ReturnType<typeof createProductStore>;
@@ -32,8 +33,13 @@
 								<td class="text-center p-2">
 									<input
 										type="checkbox"
-										onchange={(e) => {
-											productStore.toggleMemberToProduct(product.name, member);
+										checked={product.members.includes(member)}
+										onclick={(e) => {
+											if (e.currentTarget.checked) {
+												productStore.addMemberToProduct(product.name, member);
+											} else {
+												productStore.removeMemberFromProduct(product.name, member);
+											}
 										}}
 									/>
 								</td>

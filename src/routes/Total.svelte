@@ -24,7 +24,9 @@
 					{#each productStore.members as member}
 						<tr class="even:bg-gray-100 odd:bg-gray-50">
 							<th scope="row" class="text-left p-2 font-normal">{member}</th>
-							<td class="text-left p-2">{productStore.totalForMember(member).toFixed(2)} kr</td>
+							<td class="text-left p-2"
+								>{productStore.memberTotals.get(member)?.toFixed(2) ?? 0} kr</td
+							>
 						</tr>
 					{/each}
 				</tbody>

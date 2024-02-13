@@ -8,7 +8,7 @@
 	let productStore = createProductStore();
 </script>
 
-<div class="space-y-4 py-10">
+<div class="space-y-4">
 	<h1 class="text-4xl">Spleiser'n</h1>
 
 	<p class="text-gray-600">En enkel app for å holde styr på hvem som har betalt for hva.</p>

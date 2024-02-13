@@ -9,6 +9,24 @@ export const createProductStore = () => {
 	// eslint-disable-next-line prefer-const
 	let members = $state<Array<string>>([]);
 
+	const calculateMemberTotals = () => {
+		const totals = new Map<string, number>();
+		for (const member of members) {
+			totals.set(member, 0);
+		}
+
+		for (const product of products) {
+			const pricePerMember = product.price / product.members.length;
+			for (const member of product.members) {
+				totals.set(member, (totals.get(member) ?? 0) + pricePerMember);
+			}
+		}
+
+		return totals;
+	};
+
+	const memberTotals = $derived(calculateMemberTotals());
+
 	const addProduct = (product: Product) => {
 		products.push(product);
 	};
@@ -23,41 +41,26 @@ export const createProductStore = () => {
 		products = products.filter((product) => product.name !== name);
 	};
 
-	const addMember = (member: string) => {
-		members.push(member);
-	};
-
 	const removeMember = (member: string) => {
 		members = members.filter((curr) => curr !== member);
 	};
 
-	const toggleMemberToProduct = (name: string, member: string) => {
+	const addMemberToProduct = (name: string, member: string) => {
 		const product = products.find((product) => product.name === name);
 		if (!product) return;
+		if (!members.includes(member)) return;
 
-		if (!members.includes(member)) {
-			addMember(member);
-		}
-
-		const memberIsOnProduct = product.members.includes(member);
-
-		if (memberIsOnProduct) {
-			product.members = product.members.filter((curr) => curr === member);
-		} else {
+		if (!product.members.includes(member)) {
 			product.members.push(member);
 		}
 	};
 
-	const totalForMember = (member: string): number => {
-		const memberProducts = products.filter((product) => product.members.includes(member));
+	const removeMemberFromProduct = (name: string, member: string) => {
+		const product = products.find((product) => product.name === name);
+		if (!product) return;
+		if (!members.includes(member)) return;
 
-		let total = 0;
-
-		for (const product of memberProducts) {
-			total = total + product.price / product.members.length;
-		}
-
-		return total;
+		product.members = product.members.filter((curr) => curr !== member);
 	};
 
 	return {
@@ -70,11 +73,14 @@ export const createProductStore = () => {
 		set members(newMembers: Array<string>) {
 			members = newMembers;
 		},
+		get memberTotals() {
+			return memberTotals;
+		},
 		addProduct,
 		addProducts,
+		addMemberToProduct,
 		removeProduct,
-		toggleMemberToProduct,
-		totalForMember,
 		removeMember,
+		removeMemberFromProduct,
 	};
 };
