@@ -6,6 +6,15 @@
 	};
 
 	let { productStore } = $props<Props>();
+
+	const totals = $derived(
+		productStore.members.map((member) => {
+			const total = productStore.memberTotals.get(member)?.toFixed(2) ?? 0;
+			return [member, total];
+		}),
+	);
+
+	const total = $derived(totals.reduce((acc, [_, total]) => acc + Number(total), 0));
 </script>
 
 {#if productStore.members.length > 1 && productStore.products.length > 0}
@@ -21,16 +30,18 @@
 					</tr>
 				</thead>
 				<tbody>
-					{#each productStore.members as member}
+					{#each totals as [member, total]}
 						<tr class="even:bg-gray-100 odd:bg-gray-50">
 							<th scope="row" class="text-left p-2 font-normal">{member}</th>
-							<td class="text-left p-2"
-								>{productStore.memberTotals.get(member)?.toFixed(2) ?? 0} kr</td
-							>
+							<td class="text-left p-2">{total} kr</td>
 						</tr>
 					{/each}
 				</tbody>
 			</table>
+
+			{#if total > 0}
+				<p>Totalt: {total} kr</p>
+			{/if}
 		</div>
 	</div>
 {/if}
