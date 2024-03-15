@@ -80,6 +80,11 @@ export const createProductStore = () => {
 		product.members = product.members.filter((curr) => curr !== member);
 	};
 
+	const reset = () => {
+		store.members = [];
+		store.products = [];
+	};
+
 	return {
 		get products() {
 			return store.products;
@@ -99,5 +104,6 @@ export const createProductStore = () => {
 		removeProduct,
 		removeMember,
 		removeMemberFromProduct,
+		reset,
 	};
 };

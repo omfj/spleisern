@@ -1,8 +1,5 @@
 <script lang="ts">
-	import AddMember from '$lib/components/AddMember.svelte';
-	import AddProduct from '$lib/components/AddProduct.svelte';
-	import ProductOverview from '$lib/components/ProductOverview.svelte';
-	import Total from '$lib/components/Total.svelte';
+	import Calculator from '$lib/components/Calculator.svelte';
 	import { createProductStore } from '$lib/stores/product.svelte';
 
 	let productStore = createProductStore();
@@ -18,12 +15,7 @@
 
 		<p class="text-gray-600">En enkel app for å holde styr på hvem som har betalt for hva.</p>
 
-		<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-			<AddMember {productStore} />
-			<AddProduct {productStore} />
-			<ProductOverview {productStore} />
-			<Total {productStore} />
-		</div>
+		<Calculator {productStore} />
 	</div>
 
 	<div>
