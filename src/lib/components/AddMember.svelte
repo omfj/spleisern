@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Input from '$lib/components/Input.svelte';
-	import Button from '$lib/components/Button.svelte';
+	import Input from './ui/Input.svelte';
+	import Button from './ui/Button.svelte';
 	import { createProductStore } from '$lib/stores/product.svelte';
 	import { preventDefault } from '$lib/utils';
 

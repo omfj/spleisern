@@ -1,21 +1,38 @@
+import { createLocalStorage } from './localStorage.svelte';
+
+export type Store = {
+	products: Array<Product>;
+	members: Array<string>;
+};
+
 export type Product = {
 	name: string;
 	price: number;
 	members: Array<string>;
 };
 
+const initialValue: Store = {
+	products: [],
+	members: [],
+};
+
+const localStore = createLocalStorage('productStore', initialValue);
+
 export const createProductStore = () => {
-	let products = $state<Array<Product>>([]);
 	// eslint-disable-next-line prefer-const
-	let members = $state<Array<string>>([]);
+	let store = $state<Store>(localStore?.get() ?? initialValue);
+
+	$effect(() => {
+		localStore?.set(store);
+	});
 
 	const calculateMemberTotals = () => {
 		const totals = new Map<string, number>();
-		for (const member of members) {
+		for (const member of store.members) {
 			totals.set(member, 0);
 		}
 
-		for (const product of products) {
+		for (const product of store.products) {
 			const pricePerMember = product.price / product.members.length;
 			for (const member of product.members) {
 				totals.set(member, (totals.get(member) ?? 0) + pricePerMember);
@@ -28,7 +45,7 @@ export const createProductStore = () => {
 	const memberTotals = $derived(calculateMemberTotals());
 
 	const addProduct = (product: Product) => {
-		products.push(product);
+		store.products.push(product);
 	};
 
 	const addProducts = (products: Array<Product>) => {
@@ -38,17 +55,17 @@ export const createProductStore = () => {
 	};
 
 	const removeProduct = (name: string) => {
-		products = products.filter((product) => product.name !== name);
+		store.products = store.products.filter((product) => product.name !== name);
 	};
 
 	const removeMember = (member: string) => {
-		members = members.filter((curr) => curr !== member);
+		store.members = store.members.filter((curr) => curr !== member);
 	};
 
 	const addMemberToProduct = (name: string, member: string) => {
-		const product = products.find((product) => product.name === name);
+		const product = store.products.find((product) => product.name === name);
 		if (!product) return;
-		if (!members.includes(member)) return;
+		if (!store.members.includes(member)) return;
 
 		if (!product.members.includes(member)) {
 			product.members.push(member);
@@ -56,22 +73,22 @@ export const createProductStore = () => {
 	};
 
 	const removeMemberFromProduct = (name: string, member: string) => {
-		const product = products.find((product) => product.name === name);
+		const product = store.products.find((product) => product.name === name);
 		if (!product) return;
-		if (!members.includes(member)) return;
+		if (!store.members.includes(member)) return;
 
 		product.members = product.members.filter((curr) => curr !== member);
 	};
 
 	return {
 		get products() {
-			return products;
+			return store.products;
 		},
 		get members() {
-			return members;
+			return store.members;
 		},
 		set members(newMembers: Array<string>) {
-			members = newMembers;
+			store.members = newMembers;
 		},
 		get memberTotals() {
 			return memberTotals;
