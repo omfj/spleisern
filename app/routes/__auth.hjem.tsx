@@ -1,9 +1,18 @@
 import { getAuth } from "@clerk/remix/ssr.server";
-import { LoaderFunctionArgs, json, redirect } from "@remix-run/cloudflare";
+import {
+  LoaderFunctionArgs,
+  MetaFunction,
+  json,
+  redirect,
+} from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
 import { HoverCard } from "~/components/hover-card";
 import { ButtonLink } from "~/components/ui/buttons";
 import { getDB } from "~/db/client.server";
+
+export const meta: MetaFunction = () => {
+  return [{ title: "Hjem | Spleisern" }];
+};
 
 export const loader = async (args: LoaderFunctionArgs) => {
   const { userId } = await getAuth(args);

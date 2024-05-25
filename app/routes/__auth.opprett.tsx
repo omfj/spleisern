@@ -2,6 +2,7 @@ import { getAuth } from "@clerk/remix/ssr.server";
 import {
   ActionFunctionArgs,
   LoaderFunctionArgs,
+  MetaFunction,
   json,
   redirect,
 } from "@remix-run/cloudflare";
@@ -12,6 +13,10 @@ import { getDrizzle } from "~/db/client.server";
 import { members, products, settlements } from "~/db/schemas";
 import { membersToProducts } from "~/db/schemas/members-to-products";
 import { SettlementState } from "~/stores/settlement";
+
+export const meta: MetaFunction = () => {
+  return [{ title: "Opprett | Spleisern" }];
+};
 
 export const loader = async (args: LoaderFunctionArgs) => {
   const { userId } = await getAuth(args);
