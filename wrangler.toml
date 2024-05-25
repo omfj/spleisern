@@ -1,0 +1,17 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "spleisern"
+compatibility_date = "2024-05-24"
+pages_build_output_dir = "./build/client"
+compatibility_flags = [ "nodejs_compat" ]
+
+[vars]
+CLERK_SIGN_IN_URL = "/logg-inn"
+CLERK_SIGN_UP_URL = "/registrer"
+CLERK_SIGN_IN_FALLBACK_URL = "/"
+CLERK_SIGN_UP_FALLBACK_URL = "/"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "spleis-db"
+database_id = "71c8bcc8-0b04-4cea-81a8-93d889acace0"
+migrations_dir = "./migrations"

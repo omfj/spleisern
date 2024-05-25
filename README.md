@@ -1,19 +1,48 @@
-# Spleiser'n
+# Welcome to Remix + Vite!
 
-For å lett gjøre opp for seg etter å ha handlet mat sammen.
+📖 See the [Remix docs](https://remix.run/docs) and the [Remix Vite docs](https://remix.run/docs/en/main/guides/vite) for details on supported features.
 
-## Utivkling
+## Typegen
 
-### Kjøre lokalt
+Generate types for your Cloudflare bindings in `wrangler.toml`:
 
-1. Klon repoet
-2. `pnpm install`
-3. `pnpm dev`
-4. Åpne [http://localhost:5173](http://localhost:5173) for å se appen i nettleseren.
+```sh
+npm run typegen
+```
 
-## TODO
+You will need to rerun typegen whenever you make changes to `wrangler.toml`.
 
-- Mulighet for å logge inn og lagre data
-- Oversikt over tidligere spleiser
-- Generere QR-kode for spleisen
-- Generere kvittering for spleisen
+## Development
+
+Run the Vite dev server:
+
+```sh
+npm run dev
+```
+
+To run Wrangler:
+
+```sh
+npm run build
+npm run start
+```
+
+## Deployment
+
+> [!WARNING]  
+> Cloudflare does _not_ use `wrangler.toml` to configure deployment bindings.
+> You **MUST** [configure deployment bindings manually in the Cloudflare dashboard][bindings].
+
+First, build your app for production:
+
+```sh
+npm run build
+```
+
+Then, deploy your app to Cloudflare Pages:
+
+```sh
+npm run deploy
+```
+
+[bindings]: https://developers.cloudflare.com/pages/functions/bindings/

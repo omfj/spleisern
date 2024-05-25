@@ -1,13 +1,12 @@
-import type { Config } from 'drizzle-kit';
-import * as dotenv from 'dotenv';
+import { defineConfig } from "drizzle-kit";
 
-dotenv.config();
-
-export default {
-	out: './drizzle/migrations',
-	schema: './src/lib/db/schemas',
-	driver: 'libsql',
-	dbCredentials: {
-		url: process.env.DATABASE_URL!,
-	},
-} satisfies Config;
+export default defineConfig({
+  driver: "d1",
+  dialect: "sqlite",
+  dbCredentials: {
+    dbName: "spleis-db",
+    wranglerConfigPath: "./wrangler.toml",
+  },
+  out: "./migrations",
+  schema: "./app/db/schemas/index.ts",
+});

@@ -1,9 +1,16 @@
-import type { Config } from 'tailwindcss';
+import type { Config } from "tailwindcss";
+import forms from "@tailwindcss/forms";
 
 export default {
-	content: ['./src/**/*.{html,js,svelte,ts}'],
-	theme: {
-		extend: {},
-	},
-	plugins: [],
+  content: ["./app/**/*.{js,jsx,ts,tsx}"],
+  theme: {
+    extend: {
+      colors: {
+        primary: "var(--primary)",
+        foreground: "var(--foreground)",
+        background: "var(--background)",
+      },
+    },
+  },
+  plugins: [forms],
 } satisfies Config;
