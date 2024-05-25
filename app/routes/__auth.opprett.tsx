@@ -55,6 +55,24 @@ export const action = async (args: ActionFunctionArgs) => {
     formData.get("settlement") as string
   ) as SettlementState;
 
+  const errors = [];
+
+  if (!settlement.name) {
+    errors.push("Navn er påkrevd");
+  }
+
+  if (settlement.products.length < 2) {
+    errors.push("Det må være minst to produkter");
+  }
+
+  if (settlement.members.length < 2) {
+    errors.push("Det må være minst to medlemmer");
+  }
+
+  if (errors.length > 0) {
+    return json({ success: false, errors } as const);
+  }
+
   const settlementId = nanoid();
 
   const db = getDrizzle(context.cloudflare.env.DB);
@@ -91,5 +109,5 @@ export const action = async (args: ActionFunctionArgs) => {
     }))
   );
 
-  return json({ success: true, id: settlementId });
+  return json({ success: true, id: settlementId, errors: [] } as const);
 };

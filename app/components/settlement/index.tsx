@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Button } from "../ui/buttons";
 import { Stepper, Step } from "../ui/stepper";
 import { AddMembersStep } from "./steps/add-member";
@@ -29,13 +29,11 @@ export const Settlement = () => {
     memberToProducts,
   };
 
-  useEffect(() => {
-    if (actionData && actionData.success) {
-      reset();
-      setActiveStep(0);
-      redirect(`/oppgjor/${actionData.id}`);
-    }
-  }, [actionData, reset, setActiveStep]);
+  if (actionData && actionData.success) {
+    reset();
+    setActiveStep(0);
+    redirect(`/oppgjor/${actionData.id}`);
+  }
 
   return (
     <>
@@ -50,6 +48,14 @@ export const Settlement = () => {
           );
         })}
       </Stepper>
+
+      {actionData?.errors && actionData.errors.length > 0 && (
+        <div className="bg-red-100 text-red-800 p-4 mb-4 rounded-lg">
+          {actionData.errors.map((error, index) => (
+            <div key={index}>{error}</div>
+          ))}
+        </div>
+      )}
 
       <Steps activeStep={activeStep}>
         <InitializeSettlementStep />
