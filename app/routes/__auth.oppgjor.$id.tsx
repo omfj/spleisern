@@ -87,7 +87,7 @@ export default function SettlementPage() {
                   return acc;
                 }
 
-                return acc + product.price;
+                return acc + product.price / product.members.length;
               }, 0);
 
               return (
