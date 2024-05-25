@@ -1,48 +1,20 @@
-# Welcome to Remix + Vite!
+# Spleiser'n
 
-📖 See the [Remix docs](https://remix.run/docs) and the [Remix Vite docs](https://remix.run/docs/en/main/guides/vite) for details on supported features.
+Spleiser'n is an application to create settlements after buying products with multiple people.
 
-## Typegen
-
-Generate types for your Cloudflare bindings in `wrangler.toml`:
-
-```sh
-npm run typegen
-```
-
-You will need to rerun typegen whenever you make changes to `wrangler.toml`.
+Uses Clerk for authentication and is deployed on Cloudflare on the Workers platform using D1.
 
 ## Development
 
-Run the Vite dev server:
+### Prerequisites
 
-```sh
-npm run dev
-```
+- Node.js >= 20
+- pnpm
 
-To run Wrangler:
+### Setup
 
-```sh
-npm run build
-npm run start
-```
-
-## Deployment
-
-> [!WARNING]  
-> Cloudflare does _not_ use `wrangler.toml` to configure deployment bindings.
-> You **MUST** [configure deployment bindings manually in the Cloudflare dashboard][bindings].
-
-First, build your app for production:
-
-```sh
-npm run build
-```
-
-Then, deploy your app to Cloudflare Pages:
-
-```sh
-npm run deploy
-```
-
-[bindings]: https://developers.cloudflare.com/pages/functions/bindings/
+1. Clone the repository
+2. Install dependencies with `pnpm install`
+3. Create a `.dev.vars` following the `.dev.vars.example` file
+4. Run the migrations with `pnpm db:apply`
+5. Run the development server with `pnpm dev`
