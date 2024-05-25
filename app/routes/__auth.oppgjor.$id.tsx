@@ -7,10 +7,6 @@ import { getDB } from "~/db/client.server";
 export const loader = async (args: LoaderFunctionArgs) => {
   const { userId } = await getAuth(args);
 
-  if (!userId) {
-    throw redirect("/logg-inn");
-  }
-
   const settlementId = args.params.id;
 
   if (!settlementId) {
@@ -37,6 +33,10 @@ export const loader = async (args: LoaderFunctionArgs) => {
 
   if (!settlement) {
     throw new Response("Not found", { status: 404 });
+  }
+
+  if (!userId && !settlement.isPublic) {
+    throw redirect("/logg-inn");
   }
 
   return json({
