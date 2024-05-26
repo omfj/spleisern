@@ -58,22 +58,46 @@ export const useSettlementStore = create<SettlementState & SettlementActions>()(
 
         addMember: (member) =>
           set((state) => ({ members: [...state.members, member] })),
-        removeMember: (id) =>
+
+        removeMember: (id) => {
           set((state) => ({
+            memberToProducts: state.memberToProducts.filter(
+              (mtp) => mtp.memberId !== id
+            ),
+          }));
+
+          return set((state) => ({
             members: state.members.filter((member) => member.id !== id),
-          })),
+          }));
+        },
 
         addProduct: (product) =>
           set((state) => ({ products: [...state.products, product] })),
-        removeProduct: (id) =>
-          set((state) => ({
-            products: state.products.filter((product) => product.id !== id),
-          })),
 
-        addMemberToProduct: (memberToProduct) =>
+        removeProduct: (id) => {
           set((state) => ({
+            memberToProducts: state.memberToProducts.filter(
+              (mtp) => mtp.productId !== id
+            ),
+          }));
+
+          return set((state) => ({
+            products: state.products.filter((product) => product.id !== id),
+          }));
+        },
+
+        addMemberToProduct: (memberToProduct) => {
+          set((state) => ({
+            memberToProducts: state.memberToProducts.filter(
+              (mtp) => mtp.memberId !== memberToProduct.memberId
+            ),
+          }));
+
+          return set((state) => ({
             memberToProducts: [...state.memberToProducts, memberToProduct],
-          })),
+          }));
+        },
+
         removeMemberFromProduct: (memberToProduct) =>
           set((state) => ({
             memberToProducts: state.memberToProducts.filter(
