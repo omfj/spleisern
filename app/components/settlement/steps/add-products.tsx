@@ -31,7 +31,7 @@ export const AddProductsStep = () => {
     });
 
     setName("");
-    setPrice(undefined);
+    setPrice(0);
     nameInputRef.current?.focus();
   };
 
@@ -74,6 +74,7 @@ export const AddProductsStep = () => {
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               priceInputRef.current?.focus();
+              priceInputRef.current?.select();
             }
           }}
           onChange={(e) => setName(e.target.value)}
@@ -81,13 +82,21 @@ export const AddProductsStep = () => {
           placeholder="Navn..."
         />
         <Input
+          ref={priceInputRef}
           value={price}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               handleAddProduct();
             }
           }}
-          onChange={(e) => setPrice(Number(e.target.value))}
+          onChange={(e) => {
+            const value = Number(e.target.value);
+            if (isNaN(value)) {
+              return setPrice(undefined);
+            }
+
+            setPrice(+value);
+          }}
           className="max-w-[70px]"
           type="number"
           placeholder="Pris..."
