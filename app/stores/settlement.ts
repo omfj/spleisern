@@ -87,12 +87,6 @@ export const useSettlementStore = create<SettlementState & SettlementActions>()(
         },
 
         addMemberToProduct: (memberToProduct) => {
-          set((state) => ({
-            memberToProducts: state.memberToProducts.filter(
-              (mtp) => mtp.memberId !== memberToProduct.memberId
-            ),
-          }));
-
           return set((state) => ({
             memberToProducts: [...state.memberToProducts, memberToProduct],
           }));

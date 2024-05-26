@@ -1,3 +1,4 @@
+import { Alert } from "~/components/ui/alert";
 import { Checkbox } from "~/components/ui/checkbox";
 import { useSettlementStore } from "~/stores/settlement";
 
@@ -33,6 +34,12 @@ export const AddRelationsStep = () => {
 
   return (
     <div>
+      {products.length === 0 && (
+        <Alert intent="warning" className="mb-4">
+          Du har ikke lagt til noen varer.
+        </Alert>
+      )}
+
       <h2 className="text-gray-700 text-2xl mb-4">Hvem har kjøpt hva?</h2>
 
       <div className="divide-y">

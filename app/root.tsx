@@ -37,7 +37,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         <Meta />
         <Links />
       </head>
-      <body className="flex flex-col min-h-screen bg-background text-foreground bg-noisy">
+      <body className="flex flex-col min-h-screen bg-background text-foreground bg-noisy antialiased">
         {children}
         <ScrollRestoration />
         <Scripts />

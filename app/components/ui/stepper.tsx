@@ -4,7 +4,9 @@ import { cn } from "~/utils/cn";
 type StepperProps = HTMLAttributes<HTMLDivElement>;
 
 export const Stepper = ({ className, ...props }: StepperProps) => {
-  return <div className={cn("flex gap-4", className)} {...props} />;
+  return (
+    <div className={cn("flex w-full justify-between", className)} {...props} />
+  );
 };
 
 type StepProps = HTMLAttributes<HTMLDivElement> & {
@@ -13,20 +15,33 @@ type StepProps = HTMLAttributes<HTMLDivElement> & {
   label?: string;
 };
 
-export const Step = ({ step, isActive, className, ...props }: StepProps) => {
+export const Step = ({
+  step,
+  label,
+  isActive,
+  className,
+  ...props
+}: StepProps) => {
   return (
-    <div
-      className={cn(
-        "flex items-center justify-center text-sm font-medium pb transition-colors duration-300 shadow-inner gap-2 rounded-full h-8 w-8",
-        {
-          "bg-primary text-gray-700": isActive,
-          "bg-gray-200 text-gray-500": !isActive,
-        },
-        className
+    <div className="flex flex-col justify-center items-center">
+      <div
+        className={cn(
+          "flex items-center justify-center border text-sm font-medium transition-colors duration-300 shadow-inner rounded-full h-8 w-8",
+          {
+            "bg-primary text-white": isActive,
+            "bg-gray-200 text-gray-500": !isActive,
+          },
+          className
+        )}
+        {...props}
+      >
+        {step + 1}
+      </div>
+      {label && (
+        <p className="hidden sm:block text-gray-500 text-xs font-medium text-center">
+          {label}
+        </p>
       )}
-      {...props}
-    >
-      {step + 1}
     </div>
   );
 };

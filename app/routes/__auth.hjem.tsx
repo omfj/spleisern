@@ -6,6 +6,7 @@ import {
   redirect,
 } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
+import { format } from "date-fns";
 import { HoverCard } from "~/components/hover-card";
 import { ButtonLink } from "~/components/ui/buttons";
 import { getDB } from "~/db/client.server";
@@ -53,19 +54,25 @@ export default function HomePage() {
           {settlements.length > 0 ? (
             <div className="divide-y">
               {settlements.map((settlement) => (
-                <div key={settlement.id} className="py-2 flex items-center">
-                  <p className="text-gray-600 font-medium flex-1">
-                    {settlement.name}
-                  </p>
+                <div key={settlement.id} className="flex items-center">
+                  <div className="py-2 flex flex-col flex-1">
+                    <p className="text-gray-600 font-medium">
+                      {settlement.name}
+                    </p>
+                    <p className="text-gray-500 text-sm">
+                      Laget:{" "}
+                      {format(new Date(settlement.createdAt), "dd.MM.yyyy")}
+                    </p>
+                  </div>
                   <ButtonLink to={`/oppgjor/${settlement.id}`}>
-                    {"Se oppgjør"}
+                    Se oppgjør
                   </ButtonLink>
                 </div>
               ))}
             </div>
           ) : (
             <p className="text-gray-600 text-center text-xl font-medium">
-              {"Ingen spleiser opprettet"}
+              Ingen spleiser opprettet
             </p>
           )}
         </HoverCard>

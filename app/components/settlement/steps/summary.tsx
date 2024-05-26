@@ -1,4 +1,4 @@
-import { TriangleAlert } from "lucide-react";
+import { Alert } from "~/components/ui/alert";
 import { useSettlementStore } from "~/stores/settlement";
 
 export const SummaryStep = () => {
@@ -6,14 +6,13 @@ export const SummaryStep = () => {
 
   return (
     <div>
-      <h2 className="text-gray-700 text-2xl mb-4">Oppsummering</h2>
-
       {memberToProducts.length === 0 && (
-        <p className="bg-red-200 border-red-400 border-2 p-4 rounded-lg text-lg text-red-600 font-medium">
-          <TriangleAlert className="h-6 w-6 inline-block mr-2" />
-          Ingen har kjøpt noe enda
-        </p>
+        <Alert intent="warning" className="mb-4">
+          Du har ikke fordelt noen varer.
+        </Alert>
       )}
+
+      <h2 className="text-gray-700 text-2xl mb-4">Oppsummering</h2>
 
       <div className="divide-y">
         {products.map((product) => {
@@ -46,8 +45,6 @@ export const SummaryStep = () => {
       </div>
 
       <div className="py-4 flex flex-col">
-        {/* Total per person */}
-
         {members.map((member) => {
           const total = memberToProducts
             .filter((mtp) => mtp.memberId === member.id)

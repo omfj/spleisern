@@ -1,12 +1,13 @@
 import { X } from "lucide-react";
 import { nanoid } from "nanoid";
 import { useState, useRef } from "react";
+import { Alert } from "~/components/ui/alert";
 import { Button } from "~/components/ui/buttons";
 import { Input } from "~/components/ui/input";
 import { useSettlementStore } from "~/stores/settlement";
 
 export const AddProductsStep = () => {
-  const { products, addProduct, removeProduct } = useSettlementStore();
+  const { members, products, addProduct, removeProduct } = useSettlementStore();
   const [name, setName] = useState("");
   const [price, setPrice] = useState<number>();
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -37,6 +38,12 @@ export const AddProductsStep = () => {
 
   return (
     <div>
+      {members.length === 0 && (
+        <Alert intent="warning" className="mb-4">
+          Du har ikke lagt til noen brukere.
+        </Alert>
+      )}
+
       <h2 className="text-gray-700 text-2xl mb-4">Legg til produkter</h2>
 
       <div className="mb-8">
