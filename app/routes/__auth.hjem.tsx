@@ -12,7 +12,7 @@ import { ButtonLink } from "~/components/ui/buttons";
 import { getDB } from "~/db/client.server";
 
 export const meta: MetaFunction = () => {
-  return [{ title: "Hjem | Spleisern" }];
+  return [{ title: "Hjem | Spleiser'n" }];
 };
 
 export const loader = async (args: LoaderFunctionArgs) => {

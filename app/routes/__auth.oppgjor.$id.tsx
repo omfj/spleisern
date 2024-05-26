@@ -10,7 +10,7 @@ import { HoverCard } from "~/components/hover-card";
 import { getDB } from "~/db/client.server";
 
 export const meta: MetaFunction = () => {
-  return [{ title: "Oppgjør | Spleisern" }];
+  return [{ title: "Oppgjør | Spleiser'n" }];
 };
 
 export const loader = async (args: LoaderFunctionArgs) => {

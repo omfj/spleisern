@@ -1,4 +1,3 @@
-import { SignUp } from "@clerk/remix";
 import { getAuth } from "@clerk/remix/ssr.server";
 import {
   type MetaFunction,
@@ -7,7 +6,7 @@ import {
 } from "@remix-run/cloudflare";
 
 export const meta: MetaFunction = () => {
-  return [{ title: "Spleisern" }];
+  return [{ title: "Spleiser'n" }];
 };
 
 export const loader = async (args: LoaderFunctionArgs) => {
@@ -17,13 +16,5 @@ export const loader = async (args: LoaderFunctionArgs) => {
     throw redirect("/hjem");
   }
 
-  return null;
+  throw redirect("/logg-inn");
 };
-
-export default function IndexPage() {
-  return (
-    <div className="flex items-center justify-center min-h-screen">
-      <SignUp />
-    </div>
-  );
-}

@@ -15,7 +15,7 @@ import { membersToProducts } from "~/db/schemas/members-to-products";
 import { SettlementState } from "~/stores/settlement";
 
 export const meta: MetaFunction = () => {
-  return [{ title: "Opprett | Spleisern" }];
+  return [{ title: "Opprett | Spleiser'n" }];
 };
 
 export const loader = async (args: LoaderFunctionArgs) => {
