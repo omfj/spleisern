@@ -8,6 +8,7 @@ import {
 import { useLoaderData } from "@remix-run/react";
 import { HoverCard } from "~/components/hover-card";
 import { getDB } from "~/db/client.server";
+import { round } from "~/utils/number";
 
 export const meta: MetaFunction = () => {
   return [{ title: "Oppgjør | Spleiser'n" }];
@@ -77,7 +78,9 @@ export default function SettlementPage() {
                   </span>
                 </div>
 
-                <p className="text-gray-600 font-medium">{product.price} kr</p>
+                <p className="text-gray-600 font-medium">
+                  {round(product.price)} kr
+                </p>
               </div>
             ))}
           </div>
@@ -104,7 +107,7 @@ export default function SettlementPage() {
                   <p className="text-gray-600 font-medium flex-1">
                     {member.name}
                   </p>
-                  <p className="text-gray-600 font-medium">{total} kr</p>
+                  <p className="text-gray-600 font-medium">{round(total)} kr</p>
                 </div>
               );
             })}

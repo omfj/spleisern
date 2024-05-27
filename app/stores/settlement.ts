@@ -6,7 +6,7 @@ type Member = {
   name: string;
 };
 
-type Product = {
+export type Product = {
   id: string;
   name: string;
   price: number;
@@ -34,6 +34,7 @@ type SettlementActions = {
 
   addProduct: (product: Product) => void;
   removeProduct: (id: string) => void;
+  updateProduct: (id: Product["id"], product: Omit<Product, "id">) => void;
 
   addMemberToProduct: (memberToProduct: MemberToProduct) => void;
   removeMemberFromProduct: (memberToProduct: MemberToProduct) => void;
@@ -85,6 +86,13 @@ export const useSettlementStore = create<SettlementState & SettlementActions>()(
             products: state.products.filter((product) => product.id !== id),
           }));
         },
+
+        updateProduct: (id, product) =>
+          set((state) => ({
+            products: state.products.map((p) =>
+              p.id === id ? { ...p, ...product } : p
+            ),
+          })),
 
         addMemberToProduct: (memberToProduct) => {
           return set((state) => ({

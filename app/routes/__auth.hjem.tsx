@@ -26,6 +26,7 @@ export const loader = async (args: LoaderFunctionArgs) => {
 
   const settlements = await db.query.settlements.findMany({
     where: (settlement, { eq }) => eq(settlement.owner, userId),
+    orderBy: (settlement, { desc }) => [desc(settlement.createdAt)],
   });
 
   return json({

@@ -34,6 +34,12 @@ export const AddRelationsStep = () => {
 
   return (
     <div>
+      {members.length === 0 && (
+        <Alert intent="warning" className="mb-4">
+          Du har ikke lagt til noen brukere.
+        </Alert>
+      )}
+
       {products.length === 0 && (
         <Alert intent="warning" className="mb-4">
           Du har ikke lagt til noen varer.

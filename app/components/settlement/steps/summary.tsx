@@ -1,5 +1,6 @@
 import { Alert } from "~/components/ui/alert";
 import { useSettlementStore } from "~/stores/settlement";
+import { round } from "~/utils/number";
 
 export const SummaryStep = () => {
   const { products, members, memberToProducts } = useSettlementStore();
@@ -20,7 +21,7 @@ export const SummaryStep = () => {
             .filter((mtp) => mtp.productId === product.id)
             .map((mtp) => members.find((member) => member.id === mtp.memberId));
 
-          const pricePerPerson = product.price / buyers.length;
+          const pricePerPerson = round(product.price / (buyers.length || 1));
 
           return (
             <div
@@ -31,9 +32,13 @@ export const SummaryStep = () => {
                 <h3 className="text-gray-600 text-lg font-medium">
                   {product.name}
                 </h3>
-                <span className="text-sm text-gray-400">
-                  ({buyers.map((buyer) => buyer?.name).join(", ")})
-                </span>
+                {buyers.length ? (
+                  <span className="text-sm text-gray-400">
+                    ({buyers.map((buyer) => buyer?.name).join(", ")})
+                  </span>
+                ) : (
+                  <span className="text-sm text-gray-400">(ikke fordelt)</span>
+                )}
               </div>
 
               <p className="text-gray-600 text-lg font-medium">
@@ -68,7 +73,7 @@ export const SummaryStep = () => {
               className="flex items-center justify-between gap-2"
             >
               <p className="text-gray-600 font-medium">{member.name}</p>
-              <p className="text-gray-600 font-medium">{total} kr</p>
+              <p className="text-gray-600 font-medium">{round(total)} kr</p>
             </div>
           );
         })}
