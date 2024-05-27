@@ -4,6 +4,12 @@ Spleiser'n is an application to create settlements after buying products with mu
 
 Uses Clerk for authentication and is deployed on Cloudflare on the Workers platform using D1.
 
+## Features
+
+- Share settlements with a unique link
+- See settlement history
+- Scan receipts with ChatGPT 4o vision to automatically add products
+
 ## Development
 
 ### Prerequisites
