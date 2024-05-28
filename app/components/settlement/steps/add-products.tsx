@@ -34,6 +34,10 @@ const UploadImageForm = () => {
 
   useEffect(() => {
     if (fetcher.data) {
+      // TODO: Remove me
+
+      console.log(fetcher.data);
+
       fetcher.data.forEach((product) => {
         addProduct({
           id: nanoid(),
