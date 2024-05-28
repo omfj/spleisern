@@ -1,16 +1,17 @@
-import { useFetcher } from "@remix-run/react";
-import { Image, X, Undo2, Pencil, Check } from "lucide-react";
 import { getFormProps, useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
+import { useFetcher } from "@remix-run/react";
+import { Image, X, Undo2, Pencil, Check } from "lucide-react";
 import { nanoid } from "nanoid";
 import { useState, useRef, useEffect } from "react";
+import { z } from "zod";
+
 import { Alert } from "~/components/ui/alert";
 import { Button } from "~/components/ui/buttons";
 import { Input } from "~/components/ui/input";
+import { action } from "~/routes/image";
 import { useSettlementStore, type Product } from "~/stores/settlement";
 import { cn } from "~/utils/cn";
-import { action } from "~/routes/image";
-import { z } from "zod";
 
 const schema = z.object({
   image: z.instanceof(File, { message: "Du må sende et bilde" }),

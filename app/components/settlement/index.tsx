@@ -1,15 +1,16 @@
+import { Form, redirect, useActionData } from "@remix-run/react";
 import React, { useEffect } from "react";
-import { Button } from "../ui/buttons";
-import { Stepper, Step } from "../ui/stepper";
+
 import { AddMembersStep } from "./steps/add-member";
 import { AddProductsStep } from "./steps/add-products";
 import { AddRelationsStep } from "./steps/add-relations";
-import { useLocalStorage } from "~/hooks/use-local-storage";
-import { SummaryStep } from "./steps/summary";
 import { InitializeSettlementStep } from "./steps/initialize-settlement";
-import { useSettlementStore } from "~/stores/settlement";
-import { Form, redirect, useActionData } from "@remix-run/react";
+import { SummaryStep } from "./steps/summary";
+import { Button } from "../ui/buttons";
+import { Stepper, Step } from "../ui/stepper";
+import { useLocalStorage } from "~/hooks/use-local-storage";
 import { action } from "~/routes/__auth.opprett";
+import { useSettlementStore } from "~/stores/settlement";
 
 const STEPS = [
   {

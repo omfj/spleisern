@@ -1,13 +1,11 @@
-import { getAuth } from "@clerk/remix/ssr.server";
-import {
-  LoaderFunctionArgs,
-  MetaFunction,
-  json,
-  redirect,
-} from "@remix-run/cloudflare";
+import { LoaderFunctionArgs, MetaFunction, json } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
+
 import { HoverCard } from "~/components/hover-card";
+import { ProductsList } from "~/components/products-list";
 import { getDB } from "~/db/client.server";
+import { SettlementService } from "~/db/queries.server";
+import { formatDate } from "~/utils/date";
 import { round } from "~/utils/number";
 
 export const meta: MetaFunction = () => {
@@ -15,38 +13,11 @@ export const meta: MetaFunction = () => {
 };
 
 export const loader = async (args: LoaderFunctionArgs) => {
-  const { userId } = await getAuth(args);
-
-  const settlementId = args.params.id;
-
-  if (!settlementId) {
-    throw new Response("Not found", { status: 404 });
-  }
-
-  const db = getDB(args);
-
-  const settlement = await db.query.settlements.findFirst({
-    where: (settlement, { eq }) => eq(settlement.id, settlementId),
-    with: {
-      products: {
-        with: {
-          members: {
-            with: {
-              member: true,
-            },
-          },
-        },
-      },
-      members: true,
-    },
-  });
+  const ss = new SettlementService(getDB(args));
+  const settlement = await ss.find(args.params.id ?? "");
 
   if (!settlement) {
     throw new Response("Not found", { status: 404 });
-  }
-
-  if (!userId && !settlement.isPublic) {
-    throw redirect("/logg-inn");
   }
 
   return json({
@@ -60,32 +31,10 @@ export default function SettlementPage() {
   return (
     <div className="px-4">
       <h1 className="text-3xl font-medium">{settlement.name}</h1>
+      <p>Laget: {formatDate(new Date(settlement.createdAt))}</p>
 
       <HoverCard className="gap-8">
-        <div>
-          <h2 className="text-xl font-medium mb-2">Produkter</h2>
-          <div className="divide-y">
-            {settlement.products.map((product) => (
-              <div key={product.id} className="py-2 flex items-center">
-                <div className="flex items-center gap-2 flex-1">
-                  <p className="text-gray-600 font-medium">{product.name}</p>
-                  <span className="text-sm text-gray-500">
-                    (
-                    {product.members
-                      .map((member) => member.member.name)
-                      .join(", ")}
-                    )
-                  </span>
-                </div>
-
-                <p className="text-gray-600 font-medium">
-                  {round(product.price)} kr
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-
+        <ProductsList products={settlement.products} />
         <div>
           <h2 className="text-xl font-medium mb-2">Totalt per pers</h2>
           <div className="divide-y">

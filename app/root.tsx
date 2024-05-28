@@ -1,3 +1,6 @@
+import { nbNO } from "@clerk/localizations";
+import { ClerkApp } from "@clerk/remix";
+import { rootAuthLoader } from "@clerk/remix/ssr.server";
 import {
   Links,
   Meta,
@@ -5,15 +8,14 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+
+import stylesheet from "~/tailwind.css?url";
+
 import type {
   LinksFunction,
   LoaderFunction,
   MetaFunction,
 } from "@remix-run/cloudflare";
-import stylesheet from "~/tailwind.css?url";
-import { rootAuthLoader } from "@clerk/remix/ssr.server";
-import { ClerkApp } from "@clerk/remix";
-import { nbNO } from "@clerk/localizations";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },

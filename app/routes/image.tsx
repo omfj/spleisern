@@ -1,7 +1,10 @@
 import { getAuth } from "@clerk/remix/ssr.server";
-import { json, type ActionFunctionArgs } from "@remix-run/cloudflare";
-import { getOpenAI } from "~/openai.server";
+import { json } from "@remix-run/cloudflare";
 import { Buffer } from "node:buffer";
+
+import { getOpenAI } from "~/openai.server";
+
+import type { ActionFunctionArgs } from "@remix-run/cloudflare";
 
 const ALLOWED_TYPES = ["image/jpeg", "image/png"];
 

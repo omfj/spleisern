@@ -1,8 +1,9 @@
 import { LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { drizzle } from "drizzle-orm/d1";
+
 import * as schema from "./schemas";
 
-export const getDrizzle = (binding: D1Database) => {
+const getDrizzle = (binding: D1Database) => {
   return drizzle(binding, {
     schema,
   });

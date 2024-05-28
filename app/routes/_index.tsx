@@ -1,9 +1,7 @@
 import { getAuth } from "@clerk/remix/ssr.server";
-import {
-  type MetaFunction,
-  type LoaderFunctionArgs,
-  redirect,
-} from "@remix-run/cloudflare";
+import { redirect } from "@remix-run/cloudflare";
+
+import type { MetaFunction, LoaderFunctionArgs } from "@remix-run/cloudflare";
 
 export const meta: MetaFunction = () => {
   return [{ title: "Spleiser'n" }];

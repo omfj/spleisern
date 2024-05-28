@@ -1,5 +1,6 @@
 import { InferSelectModel, InferInsertModel, relations } from "drizzle-orm";
 import { index, sqliteTable, text } from "drizzle-orm/sqlite-core";
+
 import { settlements, membersToProducts } from ".";
 
 export const members = sqliteTable(
