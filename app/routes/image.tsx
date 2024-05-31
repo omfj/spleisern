@@ -76,7 +76,7 @@ export const action = async (args: ActionFunctionArgs) => {
     throw new Response(null, { status: 500 });
   }
 
-  let jsonData: Array<{ name: string; price: string }> | null;
+  let jsonData: Array<{ name: string; price: string | number }> | null;
 
   try {
     jsonData = JSON.parse(content);
@@ -89,5 +89,24 @@ export const action = async (args: ActionFunctionArgs) => {
     throw new Response(null, { status: 500 });
   }
 
-  return json(jsonData);
+  const parsedJson = jsonData
+    .map((item) => {
+      if (typeof item !== "object" || !item) {
+        return null;
+      }
+
+      const name = item.name;
+      const price = item.price;
+
+      if (typeof name !== "string" || typeof price !== "string") {
+        return null;
+      }
+
+      const priceNumber = parseFloat(price);
+
+      return { name, price: priceNumber };
+    })
+    .filter((item) => item !== null);
+
+  return json(parsedJson);
 };
