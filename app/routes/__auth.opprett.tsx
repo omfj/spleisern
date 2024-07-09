@@ -3,6 +3,7 @@ import {
   LoaderFunctionArgs,
   MetaFunction,
   json,
+  redirect,
 } from "@remix-run/cloudflare";
 import { nanoid } from "nanoid";
 
@@ -65,5 +66,5 @@ export const action = async (args: ActionFunctionArgs) => {
   const ss = new SettlementService(db);
   await ss.add(id, userId, settlement);
 
-  return json({ success: true, id: id, errors: [] } as const);
+  return redirect(`/oppgjor/${id}`);
 };

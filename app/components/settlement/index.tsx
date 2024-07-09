@@ -1,5 +1,5 @@
-import { Form, redirect, useActionData } from "@remix-run/react";
-import React, { useEffect } from "react";
+import { Form, useActionData } from "@remix-run/react";
+import React from "react";
 
 import { AddMembersStep } from "./steps/add-member";
 import { AddProductsStep } from "./steps/add-products";
@@ -45,14 +45,6 @@ export const Settlement = () => {
     products,
     memberToProducts,
   };
-
-  useEffect(() => {
-    if (actionData?.success) {
-      reset();
-      setActiveStep(0);
-      redirect(`/oppgjor/${actionData.id}`);
-    }
-  }, [actionData, reset, setActiveStep]);
 
   return (
     <>

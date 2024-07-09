@@ -36,13 +36,11 @@ const UploadImageForm = () => {
     if (fetcher.data) {
       // TODO: Remove me
 
-      console.log(fetcher.data);
-
-      fetcher.data.forEach((product) => {
+      fetcher.data.filter(Boolean).forEach((product) => {
         addProduct({
           id: nanoid(),
-          name: product.name,
-          price: +product.price,
+          name: product!.name,
+          price: +product!.price,
         });
       });
     }
