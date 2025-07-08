@@ -1,26 +1,38 @@
-# Spleiser'n
+# sv
 
-Spleiser'n is an application to create settlements after buying products with multiple people.
+Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
 
-Uses Clerk for authentication and is deployed on Cloudflare on the Workers platform using D1.
+## Creating a project
 
-## Features
+If you're seeing this, you've probably already done this step. Congrats!
 
-- Share settlements with a unique link
-- See settlement history
-- Scan receipts with ChatGPT 4o vision to automatically add products
+```bash
+# create a new project in the current directory
+npx sv create
 
-## Development
+# create a new project in my-app
+npx sv create my-app
+```
 
-### Prerequisites
+## Developing
 
-- Node.js >= 20
-- pnpm
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
-### Setup
+```bash
+npm run dev
 
-1. Clone the repository
-2. Install dependencies with `pnpm install`
-3. Create a `.dev.vars` following the `.dev.vars.example` file
-4. Run the migrations with `pnpm db:apply`
-5. Run the development server with `pnpm dev`
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
+```
+
+## Building
+
+To create a production version of your app:
+
+```bash
+npm run build
+```
+
+You can preview the production build with `npm run preview`.
+
+> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.

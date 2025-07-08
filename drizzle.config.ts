@@ -1,12 +1,11 @@
-import { defineConfig } from "drizzle-kit";
+import { defineConfig } from 'drizzle-kit';
 
 export default defineConfig({
-  driver: "d1",
-  dialect: "sqlite",
-  dbCredentials: {
-    dbName: "spleis-db",
-    wranglerConfigPath: "./wrangler.toml",
-  },
-  out: "./migrations",
-  schema: "./app/db/schemas/index.ts",
+	schema: './src/lib/db/schemas/index.ts',
+	dialect: 'sqlite',
+	casing: 'snake_case',
+	out: './migrations',
+
+	verbose: true,
+	strict: true
 });

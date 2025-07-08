@@ -1,0 +1,13 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+
+::selection {
+	background-color: #a855f7; /* purple-500 */
+	color: white;
+}
+
+::-moz-selection {
+	background-color: #a855f7; /* purple-500 */
+	color: white;
+}
