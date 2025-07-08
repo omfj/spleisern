@@ -18,6 +18,10 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
 		const spleis = settlement[0];
 
+		if (!spleis.isPublic && locals.auth.user?.id !== spleis.owner) {
+			throw error(403, 'Access denied to this spleis');
+		}
+
 		// Fetch members
 		const spleisMembers = await locals.db
 			.select()
