@@ -3,7 +3,7 @@ import { responseFormatFromZodObject } from '@mistralai/mistralai/extra/structCh
 import { z } from 'zod';
 import { title } from '$lib/strings';
 
-const SUPPORTED_FILE_TYPES = ['application/pdf', 'image/png', 'image/jpeg', 'image/jpg'];
+const SUPPORTED_FILE_TYPES = ['application/pdf'];
 
 const ReceiptSchema = z.object({
 	products: z
@@ -39,9 +39,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 	const fileArrayBuffer = await file.arrayBuffer();
 	const fileBase64 = Buffer.from(fileArrayBuffer).toString('base64');
 
-	const documentUrl = fileType === 'application/pdf' 
-		? `data:${fileType};base64,${fileBase64}`
-		: `data:application/octet-stream;base64,${fileBase64}`;
+	const documentUrl = `data:${fileType};base64,${fileBase64}`;
 
 	const ocrResponse = await locals.mistral.ocr.process({
 		model: 'mistral-ocr-latest',

@@ -121,7 +121,7 @@
 			<FileUpload
 				id="bill"
 				name="bill"
-				accept=".pdf,.jpg,.jpeg,.png"
+				accept=".pdf"
 				placeholder="Upload your bill for automatic product extraction"
 				bind:files
 				disabled={ocrLoading}
