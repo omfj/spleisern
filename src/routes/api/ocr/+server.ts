@@ -39,11 +39,15 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 	const fileArrayBuffer = await file.arrayBuffer();
 	const fileBase64 = Buffer.from(fileArrayBuffer).toString('base64');
 
+	const documentUrl = fileType === 'application/pdf' 
+		? `data:${fileType};base64,${fileBase64}`
+		: `data:application/octet-stream;base64,${fileBase64}`;
+
 	const ocrResponse = await locals.mistral.ocr.process({
 		model: 'mistral-ocr-latest',
 		document: {
 			type: 'document_url',
-			documentUrl: `data:${fileType};base64,${fileBase64}`
+			documentUrl: documentUrl
 		},
 		documentAnnotationFormat: responseFormatFromZodObject(ReceiptSchema),
 		includeImageBase64: true
