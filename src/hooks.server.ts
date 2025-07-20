@@ -3,7 +3,7 @@ import { createDatabase } from '$lib/db/drizzle';
 import { Mistral } from '@mistralai/mistralai';
 import { redirect } from '@sveltejs/kit';
 
-const UNAUTH_PAGES = ['/login', '/register'];
+const UNAUTH_PAGES = ['/login', '/register', '/api/auth/login'];
 
 export const handle = async ({ event, resolve }) => {
 	const d1 = event.platform!.env.DB;
@@ -13,7 +13,7 @@ export const handle = async ({ event, resolve }) => {
 	const mistral = new Mistral({
 		apiKey: mistralApiKey
 	});
-	const auth = await getAuthUser(event.cookies, db);
+	const auth = await getAuthUser(event.cookies, event.request.headers, db);
 
 	event.locals.db = db;
 	event.locals.mistral = mistral;

@@ -12,8 +12,16 @@ export function generateSessionToken() {
 	return crypto.randomUUID();
 }
 
-export function getAuthSession(cookies: Cookies) {
-	return cookies.get(AUTH_COOKIE_NAME);
+export function getAuthSession(cookies: Cookies, headers: Headers) {
+	const cookie = cookies.get(AUTH_COOKIE_NAME);
+	if (cookie) {
+		return cookie;
+	}
+	const header = headers.get('Authorization');
+	if (header && header.startsWith('Bearer ')) {
+		return header.slice('Bearer '.length);
+	}
+	return null;
 }
 
 export function setAuthSession(cookies: Cookies, session: Session) {
@@ -23,8 +31,8 @@ export function setAuthSession(cookies: Cookies, session: Session) {
 	});
 }
 
-export async function getAuthUser(cookies: Cookies, db: Database) {
-	const sessionToken = getAuthSession(cookies);
+export async function getAuthUser(cookies: Cookies, headers: Headers, db: Database) {
+	const sessionToken = getAuthSession(cookies, headers);
 	if (!sessionToken) {
 		return {
 			user: null,
