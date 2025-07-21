@@ -3,6 +3,12 @@ import { responseFormatFromZodObject } from '@mistralai/mistralai/extra/structCh
 import { z } from 'zod';
 import { title } from '$lib/strings';
 
+export const config = {
+	csrf: {
+		enabled: false
+	}
+};
+
 const SUPPORTED_FILE_TYPES = ['application/pdf'];
 
 const ReceiptSchema = z.object({
@@ -21,6 +27,7 @@ export type ReceiptOCRResponse = z.infer<typeof ReceiptSchema>;
 
 export const POST: RequestHandler = async ({ locals, request }) => {
 	const user = locals.auth.user;
+
 	if (!user) {
 		throw error(401, 'Unauthorized');
 	}
