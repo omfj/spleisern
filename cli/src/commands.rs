@@ -54,19 +54,10 @@ pub async fn create_bill() -> Result<()> {
         .collect();
 
     // For every item, assign one or more members
-    let mut items: Vec<(String, Vec<String>)> = vec![];
-    loop {
-        let item_name: String = Input::new()
-            .with_prompt("Item name (or 'done' to finish)")
-            .interact_text()
-            .unwrap();
-
-        if item_name.to_lowercase() == "done" {
-            break;
-        }
-
+    let mut items_to_users: Vec<(String, Vec<String>)> = vec![];
+    for item in bill_content.iter() {
         let selected_indices: Vec<usize> = MultiSelect::new()
-            .with_prompt("Select members for this item")
+            .with_prompt(format!("{} ({})", item.name, item.price))
             .items(&members)
             .interact()
             .unwrap();
@@ -76,7 +67,7 @@ pub async fn create_bill() -> Result<()> {
             .map(|index| members[index].clone())
             .collect();
 
-        items.push((item_name, selected_members));
+        items_to_users.push((item.name.clone(), selected_members));
     }
 
     println!("{}: {}", "Title".bold(), title.green());
@@ -92,7 +83,7 @@ pub async fn create_bill() -> Result<()> {
         bill_path.display().to_string().green()
     );
     println!("{}: {:?}", "Members".bold(), members);
-    println!("{}: {:?}", "Items".bold(), items);
+    println!("{}: {:?}", "Items".bold(), items_to_users);
 
     Ok(())
 }
