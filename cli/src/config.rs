@@ -1,6 +1,6 @@
 use std::env;
 
-pub const DEFAULT_BASE_URL: &str = "http://localhost:5173";
+pub const DEFAULT_BASE_URL: &str = "https://spleis.omfj.no";
 pub const SESSION_TOKEN_ENV: &str = "SPL_SESSION_TOKEN";
 pub const BASE_URL_ENV: &str = "SPLEIS_BASE_URL";
 pub const TOKEN_FILE_NAME: &str = ".spleis-token";
