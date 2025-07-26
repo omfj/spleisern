@@ -1,8 +1,24 @@
 <script lang="ts">
 	import { getAuthenticatedUser } from '$lib/context/user-context';
+	import { goto } from '$app/navigation';
 	import ButtonLink from './button-link.svelte';
+	import Button from './button.svelte';
 
 	let user = getAuthenticatedUser();
+
+	async function handleLogout() {
+		try {
+			const response = await fetch('/api/auth/logout', {
+				method: 'POST'
+			});
+
+			if (response.ok) {
+				goto('/login');
+			}
+		} catch (error) {
+			console.error('Logout failed:', error);
+		}
+	}
 </script>
 
 <header class="item-center border-b-3 flex justify-between border-gray-300 px-4 py-4 md:px-10">
@@ -18,6 +34,9 @@
 		</li>
 		<li>
 			<ButtonLink variant="ghost" href="/">{$user.name}</ButtonLink>
+		</li>
+		<li>
+			<Button variant="ghost" onclick={handleLogout}>Log out</Button>
 		</li>
 	</menu>
 </header>
