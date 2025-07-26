@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 import { eq, desc, countDistinct } from 'drizzle-orm';
-import type { PageServerLoad } from './$types';
+import type { PageServerLoad } from './account/$types';
 import { settlements, members, products } from '$lib/db/schemas';
 
 export const load: PageServerLoad = async ({ locals }) => {

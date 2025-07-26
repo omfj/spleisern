@@ -64,6 +64,6 @@ export const actions: Actions = {
 
 		setAuthSession(cookies, session);
 
-		redirect(303, '/account');
+		redirect(303, '/');
 	}
 };

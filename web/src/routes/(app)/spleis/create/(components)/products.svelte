@@ -97,7 +97,7 @@
 	<h2 class="text-xl font-semibold">Add Products</h2>
 
 	<div class="space-y-4">
-		<div class="rounded-lg border-3 border-gray-300 bg-gray-50 p-4">
+		<div class="border-3 rounded-lg border-gray-300 bg-gray-50 p-4">
 			<h3 class="mb-3 text-lg font-medium">Upload Bill (Optional)</h3>
 			<p class="mb-4 text-sm text-gray-600">
 				Upload a bill to automatically extract products and prices using OCR.
@@ -175,13 +175,13 @@
 	{#if spleis.products.length > 0}
 		<div class="space-y-4">
 			<h3 class="text-lg font-medium">Products</h3>
-			<div class="overflow-hidden rounded-lg border-3 border-gray-300">
+			<div class="border-3 overflow-hidden rounded-lg border-gray-300">
 				<table class="w-full">
 					<thead class="border-b-3 border-gray-300 bg-gray-50">
 						<tr>
 							<th class="px-4 py-3 text-left text-sm font-medium text-gray-900">Product Name</th>
 							<th class="px-4 py-3 text-right text-sm font-medium text-gray-900">Price</th>
-							<th class="px-4 py-3 text-right text-sm font-medium text-gray-900">Actions</th>
+							<th class="px-4 py-3 text-right text-sm font-medium text-gray-900"></th>
 						</tr>
 					</thead>
 					<tbody class="divide-y divide-gray-200 bg-white">
