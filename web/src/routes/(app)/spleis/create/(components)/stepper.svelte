@@ -38,12 +38,12 @@
 
 <div class="mb-8">
 	<div class="flex items-center justify-between">
-		<div class="flex items-center space-x-4">
+		<div class="flex flex-wrap items-center gap-4">
 			{#each steps as step, index (step.title)}
 				<div class="flex items-center">
 					<button
 						type="button"
-						class="h-8 w-8 rounded-full {currentStep >= index + 1
+						class="h-8 w-8 shrink-0 rounded-full {currentStep >= index + 1
 							? 'bg-emerald-500 text-white'
 							: 'bg-gray-200 text-gray-600'} flex items-center justify-center text-sm font-medium {canNavigateToStep(
 							index
