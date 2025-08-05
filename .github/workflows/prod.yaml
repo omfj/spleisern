@@ -34,7 +34,7 @@ jobs:
 
       - name: 🚀 Run migrations
         working-directory: web
-        run: pnpm run db:migrate --remote
+        run: pnpm run db:migrate:prod
 
       - name: 🚀 Deploy
         working-directory: web
