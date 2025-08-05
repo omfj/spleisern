@@ -1,4 +1,4 @@
-use crate::{Result, commands};
+use crate::{Result, commands, is_dev};
 use clap::{Parser, Subcommand};
 
 #[derive(Parser, Clone, Debug)]
@@ -127,6 +127,7 @@ impl Cli {
                     "Base URL: {}",
                     std::env::var("SPLEIS_BASE_URL").unwrap_or("http://localhost:5173".to_string())
                 );
+                println!("Is DEV: {}", is_dev!());
                 // TODO: Show more config options
                 Ok(())
             }

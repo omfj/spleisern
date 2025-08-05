@@ -6,6 +6,11 @@ pub mod config;
 pub mod error;
 pub mod types;
 
+#[macro_export]
+macro_rules! is_dev {
+    () => {{ cfg!(debug_assertions) }};
+}
+
 #[cfg(test)]
 pub mod test_utils;
 

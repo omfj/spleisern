@@ -1,7 +1,7 @@
 use std::{env, fs, path::PathBuf};
 
 use crate::{
-    config::{SESSION_TOKEN_ENV, TOKEN_FILE_NAME},
+    config::{Config, SESSION_TOKEN_ENV},
     error::{Result, SpleisError},
 };
 
@@ -46,7 +46,7 @@ impl LocalAuth {
     }
 
     fn get_token_file_path() -> Option<PathBuf> {
-        dirs::home_dir().map(|home| home.join(TOKEN_FILE_NAME))
+        dirs::home_dir().map(|home| home.join(Config::get_token_file_name()))
     }
 }
 
@@ -74,7 +74,7 @@ mod tests {
         guard.remove_var(SESSION_TOKEN_ENV);
 
         let temp_dir = TempDir::new().unwrap();
-        let token_path = temp_dir.path().join(TOKEN_FILE_NAME);
+        let token_path = temp_dir.path().join(Config::get_token_file_name());
         fs::write(&token_path, "test_token_file").unwrap();
 
         // Mock home directory
@@ -107,7 +107,7 @@ mod tests {
         let result = LocalAuth::set_token("test_token");
         assert!(result.is_ok());
 
-        let token_path = temp_dir.path().join(TOKEN_FILE_NAME);
+        let token_path = temp_dir.path().join(Config::get_token_file_name());
         let saved_token = fs::read_to_string(token_path).unwrap();
         assert_eq!(saved_token, "test_token");
     }
@@ -120,7 +120,7 @@ mod tests {
         guard.set_var("HOME", temp_dir.path().to_str().unwrap());
         guard.set_var(SESSION_TOKEN_ENV, "test_token");
 
-        let token_path = temp_dir.path().join(TOKEN_FILE_NAME);
+        let token_path = temp_dir.path().join(Config::get_token_file_name());
         fs::write(&token_path, "test_token").unwrap();
 
         let result = LocalAuth::clear_token();
