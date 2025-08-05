@@ -4,6 +4,9 @@
   "description": "",
   "scripts": {
     "build": "cargo build --release",
-    "test": "cargo test"
+    "test": "cargo test",
+    "format": "cargo fmt",
+    "lint": "cargo clippy -- -D warnings",
+    "lint:fix": "cargo clippy --fix --allow-dirty --allow-staged"
   }
 }

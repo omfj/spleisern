@@ -36,11 +36,10 @@ impl LocalAuth {
         }
 
         // Remove the file in the home directory
-        if let Some(token_path) = Self::get_token_file_path() {
-            if token_path.exists() {
+        if let Some(token_path) = Self::get_token_file_path()
+            && token_path.exists() {
                 fs::remove_file(token_path).map_err(SpleisError::FileSystemError)?;
             }
-        }
 
         Ok(())
     }

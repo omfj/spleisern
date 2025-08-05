@@ -7,7 +7,7 @@ use crate::{auth::LocalAuth, client::SpleisClient, error::Result};
 pub async fn create_bill() -> Result<()> {
     let token = LocalAuth::get_token().expect("You must be logged in to create a bill.");
     let client = SpleisClient::new();
-    if !client.get_user_info(&token).await.is_ok() {
+    if client.get_user_info(&token).await.is_err() {
         println!("{}", "You must be logged in to create a bill.".red().bold());
         return Ok(());
     }

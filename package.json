@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "pnpm --filter=web run dev",
-    "build": "pnpm --filter=web run build",
-    "lint": "pnpm --filter=web run lint",
-    "format": "pnpm --filter=web run format",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
+    "format": "turbo run format",
     "db:generate": "pnpm --filter=web run db:generate",
     "db:migrate": "pnpm --filter=web run db:migrate"
   },
