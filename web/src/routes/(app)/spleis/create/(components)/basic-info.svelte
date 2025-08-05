@@ -3,16 +3,13 @@
 	import Label from '$lib/components/label.svelte';
 	import Textarea from '$lib/components/textarea.svelte';
 	import Checkbox from '$lib/components/checkbox.svelte';
+	import type { Spleis } from '$lib/types';
 
 	type Props = {
-		spleis: {
-			name: string;
-			description: string;
-			isPublic: boolean;
-		};
+		spleis: Spleis;
 	};
 
-	let { spleis }: Props = $props();
+	let { spleis = $bindable() }: Props = $props();
 </script>
 
 <div class="w-full space-y-6">

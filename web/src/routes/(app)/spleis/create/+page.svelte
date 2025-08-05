@@ -93,6 +93,12 @@
 		currentStep = stepNumber;
 	}
 
+	function handleReset() {
+		createSpleis.current = { ...defaultSpleis };
+		currentStep = 1;
+		localStorage.removeItem(CREATE_SPLEIS_KEY);
+	}
+
 	let isSubmitting = $state(false);
 	let submitError = $state<string | null>(null);
 
@@ -153,6 +159,7 @@
 		onPrevious={prevStep}
 		onNext={nextStep}
 		onSubmit={handleSubmit}
+		onReset={handleReset}
 		{isSubmitting}
 	/>
 </div>

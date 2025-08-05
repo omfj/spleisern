@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { cn } from '$lib/cn';
 	import Button from '$lib/components/button.svelte';
 
 	type Props = {
@@ -9,6 +8,7 @@
 		onPrevious: () => void;
 		onNext: () => void;
 		onSubmit: () => void;
+		onReset: () => void;
 		isSubmitting?: boolean;
 	};
 
@@ -19,6 +19,7 @@
 		onPrevious,
 		onNext,
 		onSubmit,
+		onReset,
 		isSubmitting = false
 	}: Props = $props();
 
@@ -27,16 +28,11 @@
 </script>
 
 <div class="mt-8 flex justify-between">
-	<Button
-		variant="ghost"
-		class={cn({
-			invisible: isFirstStep,
-			visible: !isFirstStep
-		})}
-		onclick={onPrevious}
-	>
-		← Previous
-	</Button>
+	{#if isFirstStep}
+		<Button variant="danger" onclick={onReset}>Reset</Button>
+	{:else}
+		<Button variant="ghost" onclick={onPrevious}>← Previous</Button>
+	{/if}
 
 	{#if !isLastStep}
 		<Button onclick={onNext} disabled={!canProceed || isSubmitting}>Next →</Button>

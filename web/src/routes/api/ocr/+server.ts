@@ -2,14 +2,22 @@ import { error, json, type RequestHandler } from '@sveltejs/kit';
 import { responseFormatFromZodObject } from '@mistralai/mistralai/extra/structChat.js';
 import { z } from 'zod';
 import { title } from '$lib/strings';
+import type {
+	DocumentURLChunk,
+	FileChunk,
+	ImageURLChunk
+} from '@mistralai/mistralai/models/components';
 
-export const config = {
-	csrf: {
-		enabled: false
-	}
-};
+type MistralDocument = FileChunk | ImageURLChunk | DocumentURLChunk;
 
-const SUPPORTED_FILE_TYPES = ['application/pdf'];
+const SUPPORTED_FILE_TYPES = [
+	'application/pdf',
+	'image/png',
+	'image/jpeg',
+	'image/jpg',
+	'image/webp',
+	'image/avif'
+];
 
 const ReceiptSchema = z.object({
 	products: z
@@ -24,6 +32,24 @@ const ReceiptSchema = z.object({
 });
 
 export type ReceiptOCRResponse = z.infer<typeof ReceiptSchema>;
+
+async function createFileUrl(type: string, file: File): Promise<string> {
+	const fileArrayBuffer = await file.arrayBuffer();
+	const fileBase64 = Buffer.from(fileArrayBuffer).toString('base64');
+	return `data:${type};base64,${fileBase64}`;
+}
+
+function createMistralDocument(type: string, url: string): MistralDocument {
+	return type === 'application/pdf'
+		? {
+				type: 'document_url',
+				documentUrl: url
+			}
+		: {
+				type: 'image_url',
+				imageUrl: url
+			};
+}
 
 export const POST: RequestHandler = async ({ locals, request }) => {
 	const user = locals.auth.user;
@@ -43,22 +69,24 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 		throw error(400, `Unsupported file type: ${fileType}`);
 	}
 
-	const fileArrayBuffer = await file.arrayBuffer();
-	const fileBase64 = Buffer.from(fileArrayBuffer).toString('base64');
+	const fileUrl = await createFileUrl(fileType, file);
+	const document = createMistralDocument(fileType, fileUrl);
 
-	const documentUrl = `data:${fileType};base64,${fileBase64}`;
+	let ocrResponse;
 
-	const ocrResponse = await locals.mistral.ocr.process({
-		model: 'mistral-ocr-latest',
-		document: {
-			type: 'document_url',
-			documentUrl: documentUrl
-		},
-		documentAnnotationFormat: responseFormatFromZodObject(ReceiptSchema),
-		includeImageBase64: true
-	});
+	try {
+		ocrResponse = await locals.mistral.ocr.process({
+			model: 'mistral-ocr-latest',
+			document,
+			documentAnnotationFormat: responseFormatFromZodObject(ReceiptSchema)
+		});
+	} catch (err) {
+		console.error('OCR processing error:', err);
+		throw error(500, 'Failed to process OCR');
+	}
 
 	if (!ocrResponse || !ocrResponse.documentAnnotation) {
+		console.error('OCR response is invalid:', ocrResponse);
 		throw error(500, 'OCR processing failed');
 	}
 

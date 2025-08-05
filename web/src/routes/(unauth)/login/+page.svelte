@@ -4,6 +4,8 @@
 	import Input from '$lib/components/input.svelte';
 	import Label from '$lib/components/label.svelte';
 	import Link from '$lib/components/link.svelte';
+
+	let { form } = $props();
 </script>
 
 <div class="relative flex min-h-screen flex-col">
@@ -14,6 +16,10 @@
 			<div class="flex flex-col gap-1">
 				<Label for="password">Account Number</Label>
 				<Input type="password" id="password" name="password" required />
+
+				{#if form?.success || form?.message}
+					<p class="text-sm font-medium text-red-500">{form.message}</p>
+				{/if}
 			</div>
 
 			<Button class="w-full" type="submit">Log in</Button>

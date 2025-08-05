@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { reverseFormatAccountNumber } from '$lib/account-number';
+import { InvalidAccountNumberError, reverseFormatAccountNumber } from '$lib/account-number';
 import * as tables from '$lib/db/schemas';
 import { addDays } from 'date-fns';
 
@@ -86,6 +86,16 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 		});
 	} catch (error) {
 		console.error('Login error:', error);
+		if (error instanceof InvalidAccountNumberError) {
+			return json(
+				{
+					success: false,
+					message: 'Invalid account number format.'
+				},
+				{ status: 400 }
+			);
+		}
+
 		return json(
 			{
 				success: false,

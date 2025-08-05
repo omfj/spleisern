@@ -1,4 +1,4 @@
-import { redirect } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import { reverseFormatAccountNumber } from '$lib/account-number';
 import * as tables from '$lib/db/schemas';
@@ -11,58 +11,67 @@ export const actions: Actions = {
 		const accNum = formData.get('password') as string;
 
 		if (!accNum) {
-			return {
+			return fail(400, {
 				success: false,
 				message: 'Account number is required.'
-			};
+			});
 		}
 
-		const accountNumber = reverseFormatAccountNumber(accNum.trim().toLowerCase());
-
-		if (!accountNumber) {
-			return {
+		let accountNumber;
+		try {
+			accountNumber = reverseFormatAccountNumber(accNum.trim().toLowerCase());
+		} catch {
+			return fail(400, {
 				success: false,
 				message: 'Invalid account number format.'
-			};
+			});
 		}
 
-		const account = await locals.db.query.accounts.findFirst({
-			where: (t, { eq, and }) =>
-				and(eq(t.provider, 'account-number'), eq(t.providerAccountId, accountNumber))
-		});
+		try {
+			const account = await locals.db.query.accounts.findFirst({
+				where: (t, { eq, and }) =>
+					and(eq(t.provider, 'account-number'), eq(t.providerAccountId, accountNumber))
+			});
 
-		if (!account) {
-			return {
+			if (!account) {
+				return fail(500, {
+					success: false,
+					message: 'Account not found.'
+				});
+			}
+
+			const user = await locals.db.query.users.findFirst({
+				where: (t, { eq }) => eq(t.id, account.userId)
+			});
+
+			if (!user) {
+				return fail(500, {
+					success: false,
+					message: 'User not found.'
+				});
+			}
+
+			const expiresAt = addDays(new Date(), 15);
+
+			const session = await locals.db
+				.insert(tables.sessions)
+				.values({
+					id: crypto.randomUUID(),
+					sessionToken: crypto.randomUUID(),
+					userId: user.id,
+					expiresAt: expiresAt
+				})
+				.returning()
+				.then((rows) => rows[0]);
+
+			setAuthSession(cookies, session);
+		} catch (err) {
+			console.error('Login error:', err);
+			return fail(500, {
 				success: false,
-				message: 'Account not found.'
-			};
+				message: 'Failed to log in. Please try again later.'
+			});
 		}
-
-		const user = await locals.db.query.users.findFirst({
-			where: (t, { eq }) => eq(t.id, account.userId)
-		});
-
-		if (!user) {
-			return {
-				success: false,
-				message: 'User not found.'
-			};
-		}
-
-		const expiresAt = addDays(new Date(), 15);
-
-		const session = await locals.db
-			.insert(tables.sessions)
-			.values({
-				id: crypto.randomUUID(),
-				sessionToken: crypto.randomUUID(),
-				userId: user.id,
-				expiresAt: expiresAt
-			})
-			.returning()
-			.then((rows) => rows[0]);
-
-		setAuthSession(cookies, session);
 
 		redirect(303, '/');
 	}

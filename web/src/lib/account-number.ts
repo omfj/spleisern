@@ -28,6 +28,13 @@ export function numbersFromString(str: string): string {
 	return str.replace(/[^0-9]/g, '');
 }
 
+export class InvalidAccountNumberError extends Error {
+	constructor(message: string) {
+		super(message);
+		this.name = 'InvalidAccountNumberError';
+	}
+}
+
 /**
  * Reverses the formatting of an account number.
  *
@@ -36,7 +43,7 @@ export function numbersFromString(str: string): string {
 export function reverseFormatAccountNumber(formattedAccountNumber: string): string {
 	const cleaned = numbersFromString(formattedAccountNumber);
 	if (cleaned.length !== 16) {
-		throw new Error('Invalid formatted account number length');
+		throw new InvalidAccountNumberError('Invalid account number format. Expected 16 digits.');
 	}
 	return cleaned;
 }
