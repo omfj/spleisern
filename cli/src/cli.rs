@@ -1,4 +1,4 @@
-use crate::{Result, commands, is_dev};
+use crate::{Result, commands, config::Config, is_dev};
 use clap::{Parser, Subcommand};
 
 #[derive(Parser, Clone, Debug)]
@@ -123,10 +123,7 @@ impl Cli {
         match command {
             ConfigCommands::Show => {
                 println!("Current configuration:");
-                println!(
-                    "Base URL: {}",
-                    std::env::var("SPLEIS_BASE_URL").unwrap_or("http://localhost:5173".to_string())
-                );
+                println!("Base URL: {}", Config::get_base_url());
                 println!("Is DEV: {}", is_dev!());
                 // TODO: Show more config options
                 Ok(())

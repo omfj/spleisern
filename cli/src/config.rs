@@ -13,13 +13,17 @@ pub struct Config {
 
 impl Config {
     pub fn new() -> Self {
-        let base_url = env::var(BASE_URL_ENV).unwrap_or(DEFAULT_BASE_URL.to_string());
+        let base_url = Self::get_base_url();
 
         Self { base_url }
     }
 
     pub fn with_base_url(base_url: String) -> Self {
         Self { base_url }
+    }
+
+    pub fn get_base_url() -> String {
+        env::var(BASE_URL_ENV).unwrap_or(DEFAULT_BASE_URL.to_string())
     }
 
     pub fn get_token_file_name() -> String {
