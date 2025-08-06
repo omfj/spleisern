@@ -2,12 +2,44 @@
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
-::selection {
-	background-color: #a855f7; /* purple-500 */
-	color: white;
+:root {
+	--color-background: #ffffff;
+	--color-foreground: #000000;
+
+	--color-primary: #01bc7d;
+	--color-accent: #a855f7;
+
+	--color-border: #d1d5dc;
+
+	--color-muted: #f9fafb;
+	--color-muted-foreground: #6a7282;
 }
 
-::-moz-selection {
-	background-color: #a855f7; /* purple-500 */
-	color: white;
+@theme inline {
+	--color-background: var(--color-background);
+	--color-foreground: var(--color-foreground);
+
+	--color-primary: var(--color-primary);
+	--color-accent: var(--color-accent);
+
+	--color-border: var(--color-border);
+
+	--color-muted: var(--color-muted);
+	--color-muted-foreground: var(--color-muted-foreground);
+}
+
+@layer base {
+	* {
+		@apply border-border;
+	}
+
+	::selection {
+		background-color: var(--color-accent);
+		color: white;
+	}
+
+	::-moz-selection {
+		background-color: var(--color-accent);
+		color: white;
+	}
 }
