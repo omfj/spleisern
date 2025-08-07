@@ -174,7 +174,7 @@
 			<h2 class="text-xl font-semibold">Member Breakdown</h2>
 			<div class="space-y-4">
 				{#each spleis.memberCosts as memberCost (memberCost.memberId)}
-					<div class="border-3 rounded-lg border-gray-300 p-4">
+					<div class="border-3 bg-background rounded-lg border-gray-300 p-4">
 						<div class="mb-3 flex items-center justify-between">
 							<h3 class="text-lg font-medium">{memberCost.memberName}</h3>
 							<span class="font-semibold text-emerald-600">

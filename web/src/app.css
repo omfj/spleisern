@@ -33,6 +33,13 @@
 		@apply border-border;
 	}
 
+	body {
+		background: linear-gradient(to bottom right, #f9fafb, #f3f4f6);
+		background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.15) 1px, transparent 0);
+		background-size: 20px 20px;
+		min-height: 100vh;
+	}
+
 	::selection {
 		background-color: var(--color-accent);
 		color: white;
