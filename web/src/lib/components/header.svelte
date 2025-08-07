@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { getAuthenticatedUser } from '$lib/context/user-context';
-	import { beforeNavigate, goto } from '$app/navigation';
+	import { beforeNavigate } from '$app/navigation';
 	import ButtonLink from './button-link.svelte';
 	import Button from './button.svelte';
 	import { Menu, X } from '@lucide/svelte';
+	import { signOut } from '$lib/auth';
 
 	let user = getAuthenticatedUser();
 
@@ -18,29 +19,19 @@
 	}
 
 	async function handleLogout() {
-		try {
-			const response = await fetch('/api/auth/logout', {
-				method: 'POST'
-			});
-
-			if (response.ok) {
-				goto('/login');
-			}
-		} catch (error) {
-			console.error('Logout failed:', error);
-		}
+		await signOut();
 	}
 </script>
 
 <div class="bg-background">
-	<header class="item-center border-b-3 flex justify-between border-gray-300 px-4 py-4 md:px-10">
+	<header class="item-center flex justify-between border-b-3 border-gray-300 px-4 py-4 md:px-10">
 		<menu class="flex items-center gap-2">
 			<li>
 				<a class="text-2xl font-bold hover:underline" href="/">💰 Spleis</a>
 			</li>
 		</menu>
 
-		<menu class="hidden items-center gap-4 sm:flex">
+		<menu class="hidden items-center gap-2 sm:flex">
 			<li>
 				<ButtonLink href="/spleis/create">Create Spleis</ButtonLink>
 			</li>

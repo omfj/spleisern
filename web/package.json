@@ -64,6 +64,7 @@
 		"date-fns": "^4.1.0",
 		"drizzle-orm": "^0.44.4",
 		"jose": "^6.0.12",
+		"ky": "^1.8.2",
 		"nanoid": "^5.1.5",
 		"runed": "^0.31.1",
 		"tailwind-merge": "^3.3.1",
