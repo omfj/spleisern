@@ -4,7 +4,6 @@
 	import ButtonLink from './button-link.svelte';
 	import Button from './button.svelte';
 	import { Menu, X } from '@lucide/svelte';
-	import { cn } from '$lib/cn';
 
 	let user = getAuthenticatedUser();
 

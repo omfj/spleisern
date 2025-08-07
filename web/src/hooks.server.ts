@@ -12,12 +12,13 @@ const ALLOWED_ORIGINS = ['https://spleis.omfj.no', 'http://localhost:5173'];
 const setup: Handle = async ({ event, resolve }) => {
 	const d1 = event.platform!.env.DB;
 	const mistralApiKey = event.platform!.env.MISTRAL_API_KEY;
+	const authSecret = event.platform!.env.AUTH_SECRET;
 
 	const db = createDatabase(d1);
 	const mistral = new Mistral({
 		apiKey: mistralApiKey
 	});
-	const auth = await getAuthUser(event.cookies, event.request.headers, db);
+	const auth = await getAuthUser(event.cookies, event.request.headers, db, authSecret);
 
 	event.locals.db = db;
 	event.locals.mistral = mistral;

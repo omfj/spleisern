@@ -4,6 +4,7 @@
 declare namespace Cloudflare {
 	interface Env {
 		MISTRAL_API_KEY: string;
+		AUTH_SECRET: string;
 		DB: D1Database;
 		ASSETS: Fetcher;
 	}

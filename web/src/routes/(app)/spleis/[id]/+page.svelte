@@ -1,10 +1,12 @@
 <script lang="ts">
 	import Heading from '$lib/components/heading.svelte';
 	import { formatDate } from '$lib/utils/date';
-	import { Globe, Lock } from '@lucide/svelte';
+	import { Globe, Lock, Share, Copy, Check } from '@lucide/svelte';
+	import Button from '$lib/components/button.svelte';
 
 	let { data } = $props();
 	let spleis = $derived(data.spleis);
+	let copied = $state(false);
 
 	function getMemberName(memberId: string): string {
 		return spleis.members.find((m) => m.id === memberId)?.name || 'Unknown Member';
@@ -13,6 +15,37 @@
 	function getAssignedMembers(productId: string) {
 		const memberIds = spleis.assignments[productId] || [];
 		return memberIds.map((id) => getMemberName(id));
+	}
+
+	async function handleShare() {
+		const shareData = {
+			title: `${spleis.name} - Spleis`,
+			text: `Check out this expense split: ${spleis.name}`,
+			url: window.location.href
+		};
+
+		if (navigator.share && navigator.canShare?.(shareData)) {
+			try {
+				await navigator.share(shareData);
+			} catch (error) {
+				// User cancelled or error occurred, fallback to clipboard
+				await copyToClipboard();
+			}
+		} else {
+			await copyToClipboard();
+		}
+	}
+
+	async function copyToClipboard() {
+		try {
+			await navigator.clipboard.writeText(window.location.href);
+			copied = true;
+			setTimeout(() => {
+				copied = false;
+			}, 2000);
+		} catch (error) {
+			console.error('Failed to copy to clipboard:', error);
+		}
 	}
 </script>
 
@@ -27,24 +60,36 @@
 		{#if spleis.description}
 			<p class="text-gray-600">{spleis.description}</p>
 		{/if}
-		<div class="mt-4 flex items-center gap-4 text-sm text-gray-500">
-			<span>Created {formatDate(new Date(spleis.createdAt))}</span>
-			<span>•</span>
-			<span class="inline-flex items-center gap-1">
-				{#if spleis.isPublic}
-					<Globe class="size-4" />
+		<div class="mt-4 flex items-center justify-between">
+			<div class="flex items-center gap-4 text-sm text-gray-500">
+				<span>Created {formatDate(new Date(spleis.createdAt))}</span>
+				<span>•</span>
+				<span class="inline-flex items-center gap-1">
+					{#if spleis.isPublic}
+						<Globe class="size-4" />
 
-					Public
+						Public
+					{:else}
+						<Lock class="size-4" />
+
+						Private
+					{/if}
+				</span>
+				<span>•</span>
+				<span class="font-semibold text-emerald-600">
+					Total: {spleis.totalAmount.toFixed(2)} NOK
+				</span>
+			</div>
+
+			<Button variant="outline" size="sm" onclick={handleShare} class="flex items-center gap-2">
+				{#if copied}
+					<Check class="size-4" />
+					Copied!
 				{:else}
-					<Lock class="size-4" />
-
-					Private
+					<Share class="size-4" />
+					Share
 				{/if}
-			</span>
-			<span>•</span>
-			<span class="font-semibold text-emerald-600">
-				Total: {spleis.totalAmount.toFixed(2)} NOK
-			</span>
+			</Button>
 		</div>
 	</div>
 

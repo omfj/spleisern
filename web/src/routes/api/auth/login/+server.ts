@@ -3,8 +3,9 @@ import type { RequestHandler } from './$types';
 import { InvalidAccountNumberError, reverseFormatAccountNumber } from '$lib/account-number';
 import * as tables from '$lib/db/schemas';
 import { addDays } from 'date-fns';
+import { generateSessionToken } from '$lib/auth.server';
 
-export const POST: RequestHandler = async ({ locals, request }) => {
+export const POST: RequestHandler = async ({ locals, request, platform }) => {
 	try {
 		const jsonBody = (await request.json()) as {
 			accountNumber?: string;
@@ -63,12 +64,16 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 		}
 
 		const expiresAt = addDays(new Date(), 15);
+		const sessionId = crypto.randomUUID();
+		const authSecret = platform!.env.AUTH_SECRET;
+
+		const jwtToken = await generateSessionToken(sessionId, user.id, authSecret);
 
 		const session = await locals.db
 			.insert(tables.sessions)
 			.values({
-				id: crypto.randomUUID(),
-				sessionToken: crypto.randomUUID(),
+				id: sessionId,
+				sessionToken: jwtToken,
 				userId: user.id,
 				expiresAt: expiresAt
 			})
