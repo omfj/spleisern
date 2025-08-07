@@ -12,6 +12,11 @@
 	<main
 		class="mx-auto -mt-20 flex min-h-screen w-full max-w-sm flex-col items-center justify-center p-6"
 	>
+		<div class="mb-8 text-center">
+			<div class="mb-2 text-5xl">💰</div>
+			<h1 class="text-4xl font-bold text-gray-800">spleis</h1>
+		</div>
+
 		<form class="flex w-full flex-col gap-2" method="post" use:enhance>
 			<div class="flex flex-col gap-1">
 				<Label for="password">Account Number</Label>
