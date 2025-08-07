@@ -1,12 +1,17 @@
 <script lang="ts">
 	import Heading from '$lib/components/heading.svelte';
 	import { formatDate } from '$lib/utils/date';
-	import { Globe, Lock, Share, Copy, Check } from '@lucide/svelte';
+	import { Globe, Lock, Share, Copy, Check, Trash2 } from '@lucide/svelte';
 	import Button from '$lib/components/button.svelte';
+	import { goto } from '$app/navigation';
 
 	let { data } = $props();
 	let spleis = $derived(data.spleis);
 	let copied = $state(false);
+	let showDeleteConfirm = $state(false);
+	let isDeleting = $state(false);
+
+	let isOwner = $derived(data.currentUser?.id === spleis.owner);
 
 	function getMemberName(memberId: string): string {
 		return spleis.members.find((m) => m.id === memberId)?.name || 'Unknown Member';
@@ -47,6 +52,34 @@
 			console.error('Failed to copy to clipboard:', error);
 		}
 	}
+
+	async function deleteSpleis() {
+		if (!isOwner) return;
+
+		isDeleting = true;
+		try {
+			const response = await fetch(`/api/spleis/${spleis.id}`, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+
+			if (!response.ok) {
+				const errorData = (await response.json()) as { error?: string };
+				throw new Error(errorData.error || 'Failed to delete spleis');
+			}
+
+			// Redirect to home after successful deletion
+			await goto('/');
+		} catch (error) {
+			console.error('Error deleting spleis:', error);
+			alert('Failed to delete spleis. Please try again.');
+		} finally {
+			isDeleting = false;
+			showDeleteConfirm = false;
+		}
+	}
 </script>
 
 <svelte:head>
@@ -81,7 +114,11 @@
 				</span>
 			</div>
 
-			<Button variant="outline" size="sm" onclick={handleShare} class="flex items-center gap-2">
+			<Button
+				variant="outline"
+				onclick={handleShare}
+				class="flex h-8 items-center gap-2 px-3 py-1 text-sm"
+			>
 				{#if copied}
 					<Check class="size-4" />
 					Copied!
@@ -97,7 +134,7 @@
 		<!-- Products Section -->
 		<div class="space-y-4">
 			<h2 class="text-xl font-semibold">Products</h2>
-			<div class="overflow-hidden rounded-lg border-3 border-gray-300">
+			<div class="border-3 overflow-hidden rounded-lg border-gray-300">
 				<table class="w-full">
 					<thead class="border-b-3 border-gray-300 bg-gray-50">
 						<tr>
@@ -137,7 +174,7 @@
 			<h2 class="text-xl font-semibold">Member Breakdown</h2>
 			<div class="space-y-4">
 				{#each spleis.memberCosts as memberCost (memberCost.memberId)}
-					<div class="rounded-lg border-3 border-gray-300 p-4">
+					<div class="border-3 rounded-lg border-gray-300 p-4">
 						<div class="mb-3 flex items-center justify-between">
 							<h3 class="text-lg font-medium">{memberCost.memberName}</h3>
 							<span class="font-semibold text-emerald-600">
@@ -166,7 +203,7 @@
 	</div>
 
 	<!-- Summary Statistics -->
-	<div class="rounded-lg border-3 border-gray-300 bg-gray-50 p-6">
+	<div class="border-3 rounded-lg border-gray-300 bg-gray-50 p-6">
 		<h2 class="mb-4 text-xl font-semibold">Summary</h2>
 		<div class="grid gap-4 sm:grid-cols-3">
 			<div class="text-center">
@@ -183,4 +220,61 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- Delete Section (Only for owner) -->
+	{#if isOwner}
+		<div class="border-t border-red-200 pt-6">
+			<div class="rounded-lg border border-red-200 bg-red-50 p-6">
+				<h2 class="mb-2 text-lg font-semibold text-red-800">Danger Zone</h2>
+				<p class="mb-4 text-sm text-red-700">
+					Once you delete this spleis, there is no going back. This will permanently delete the
+					spleis and all associated data.
+				</p>
+				<Button
+					variant="outline"
+					onclick={() => (showDeleteConfirm = true)}
+					class="border-red-300 text-red-700 hover:bg-red-100"
+				>
+					<Trash2 class="mr-2 size-4" />
+					Delete Spleis
+				</Button>
+			</div>
+		</div>
+	{/if}
 </div>
+
+<!-- Delete Confirmation Modal -->
+{#if showDeleteConfirm}
+	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
+		<div class="mx-4 max-w-md rounded-lg bg-white p-6 shadow-xl">
+			<h3 class="mb-2 text-lg font-semibold text-gray-900">Delete Spleis</h3>
+			<p class="mb-4 text-sm text-gray-600">
+				Are you sure you want to delete "<strong>{spleis.name}</strong>"? This action cannot be
+				undone and will permanently delete all associated data including members, products, and
+				assignments.
+			</p>
+			<div class="flex gap-3">
+				<Button
+					variant="outline"
+					onclick={() => (showDeleteConfirm = false)}
+					disabled={isDeleting}
+					class="flex-1"
+				>
+					Cancel
+				</Button>
+				<Button
+					onclick={deleteSpleis}
+					disabled={isDeleting}
+					class="flex-1 bg-red-600 text-white hover:bg-red-700"
+				>
+					{#if isDeleting}
+						Deleting...
+					{:else}
+						<Trash2 class="mr-2 size-4" />
+						Delete
+					{/if}
+				</Button>
+			</div>
+		</div>
+	</div>
+{/if}

@@ -23,7 +23,7 @@ export function buttonStyles(
 				variant === 'danger',
 			'border-transparent bg-transparent text-gray-900 hover:bg-gray-100 focus:ring-gray-300 active:bg-gray-200':
 				variant === 'ghost',
-			'border-gray-300 bg-transparent text-gray-900 hover:border-gray-400 hover:bg-gray-50 focus:ring-gray-300 active:bg-gray-200':
+			'border-gray-300 bg-transparent text-gray-900 hover:bg-gray-50 focus:ring-gray-300 active:bg-gray-200':
 				variant === 'outline'
 		},
 		buttonType === 'link' && 'hover:underline',

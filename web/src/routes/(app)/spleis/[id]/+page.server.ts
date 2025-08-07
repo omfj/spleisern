@@ -97,7 +97,8 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 				products: productsWithPrice,
 				assignments: assignmentsMap,
 				memberCosts
-			}
+			},
+			currentUser: locals.auth.user
 		};
 	} catch (err) {
 		console.error('Error loading spleis:', err);
