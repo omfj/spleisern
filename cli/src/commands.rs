@@ -2,7 +2,7 @@ use colored::Colorize;
 use dialoguer::{Input, MultiSelect, Select};
 use rfd::FileDialog;
 
-use crate::{auth::LocalAuth, client::SpleisClient, error::Result};
+use crate::{ReceiptItem, auth::LocalAuth, client::SpleisClient, error::Result};
 
 pub async fn create_bill() -> Result<()> {
     let token = LocalAuth::get_token().expect("You must be logged in to create a bill.");
@@ -17,6 +17,7 @@ pub async fn create_bill() -> Result<()> {
     let title: String = Input::new().with_prompt("Title").interact_text().unwrap();
     let description: String = Input::new()
         .with_prompt("Description")
+        .allow_empty(true)
         .interact_text()
         .unwrap();
 
@@ -28,34 +29,75 @@ pub async fn create_bill() -> Result<()> {
         .map(|i| i == 0)
         .unwrap();
 
-    let bill_path = FileDialog::new()
-        .add_filter("text", &["pdf"]) // OCR only supports PDF files for now
-        .set_directory(current_dir)
-        .pick_file()
+    let should_scan_receipt: bool = Select::new()
+        .with_prompt("Do you want to scan a receipt?")
+        .default(0)
+        .items(&["Yes", "No"])
+        .interact()
+        .map(|i| i == 0)
         .unwrap();
 
-    let bill_content = client.upload_receipt(&token, &bill_path).await?;
+    let mut items: Vec<ReceiptItem> = Vec::new();
 
-    if bill_content.is_empty() {
-        println!(
-            "{}",
-            "Failed to upload the bill. Please try again.".red().bold()
-        );
-        return Ok(());
+    let bill_items = if should_scan_receipt {
+        // Use a file dialog to select the bill file
+        let path = FileDialog::new()
+            .add_filter("text", &["pdf", "png", "jpeg", "jpg"])
+            .set_directory(current_dir)
+            .pick_file()
+            .unwrap();
+
+        let bill_content = client.upload_receipt(&token, &path).await?;
+        Some(bill_content)
+    } else {
+        None
+    };
+
+    if let Some(bill_items) = bill_items {
+        items.extend(bill_items);
     }
 
-    let members: Vec<String> = Input::new()
-        .with_prompt("Members (comma separated)")
-        .default("".to_string())
-        .interact_text()
-        .unwrap()
-        .split(',')
-        .map(|s| s.trim().to_string())
-        .collect();
+    loop {
+        let item_name: String = Input::new()
+            .with_prompt("Add an item (or leave empty to finish)")
+            .allow_empty(true)
+            .interact_text()
+            .unwrap();
+
+        if item_name.is_empty() {
+            break;
+        }
+
+        let item_price: f64 = Input::new()
+            .with_prompt("Enter the price for this item")
+            .interact_text()
+            .unwrap();
+
+        items.push(ReceiptItem {
+            name: item_name,
+            price: item_price,
+        });
+    }
+
+    let mut members: Vec<String> = Vec::new();
+
+    loop {
+        let member_input: String = Input::new()
+            .with_prompt("Add a member (or leave empty to finish)")
+            .allow_empty(true)
+            .interact_text()
+            .unwrap();
+
+        if member_input.is_empty() {
+            break;
+        } else {
+            members.push(member_input);
+        }
+    }
 
     // For every item, assign one or more members
     let mut items_to_users: Vec<(String, Vec<String>)> = vec![];
-    for item in bill_content.iter() {
+    for item in items.iter() {
         let selected_indices: Vec<usize> = MultiSelect::new()
             .with_prompt(format!("{} ({})", item.name, item.price))
             .items(&members)
@@ -76,11 +118,6 @@ pub async fn create_bill() -> Result<()> {
         "{}: {}",
         "Is Public".bold(),
         if is_public { "Yes" } else { "No" }.green()
-    );
-    println!(
-        "{}: {}",
-        "Bill Path".bold(),
-        bill_path.display().to_string().green()
     );
     println!("{}: {:?}", "Members".bold(), members);
     println!("{}: {:?}", "Items".bold(), items_to_users);
