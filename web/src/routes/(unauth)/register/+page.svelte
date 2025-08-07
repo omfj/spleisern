@@ -14,7 +14,7 @@
 
 <div class="relative flex min-h-screen flex-col">
 	<main
-		class="mx-auto -mt-20 flex min-h-screen w-full max-w-md flex-col items-center justify-center px-4"
+		class="mx-auto -mt-20 flex min-h-screen w-full max-w-sm flex-col items-center justify-center p-6"
 	>
 		<div class="w-full space-y-6">
 			{#if !hasUnderstood}

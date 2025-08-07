@@ -10,7 +10,7 @@
 
 <div class="relative flex min-h-screen flex-col">
 	<main
-		class="mx-auto -mt-20 flex min-h-screen w-full max-w-sm flex-col items-center justify-center"
+		class="mx-auto -mt-20 flex min-h-screen w-full max-w-sm flex-col items-center justify-center p-6"
 	>
 		<form class="flex w-full flex-col gap-2" method="post" use:enhance>
 			<div class="flex flex-col gap-1">
