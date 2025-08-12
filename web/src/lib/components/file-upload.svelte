@@ -83,4 +83,11 @@
 	{/if}
 </div>
 
-<input bind:this={fileInput} type="file" class="hidden" onchange={handleFileChange} {...props} />
+<input
+	bind:this={fileInput}
+	type="file"
+	class="hidden"
+	accept="image/*,application/pdf,text/*"
+	onchange={handleFileChange}
+	{...props}
+/>

@@ -28,7 +28,9 @@ const ReceiptSchema = z.object({
 				.describe('The price of the product. Add the pant to the price if there is one.')
 		})
 		.array()
-		.describe('List of products in the receipt')
+		.describe(
+			'List of products in the receipt. If there are no products, the array will be empty. If you believe that what you see is not a receipt, the array will be empty.'
+		)
 });
 
 export type ReceiptOCRResponse = z.infer<typeof ReceiptSchema>;
