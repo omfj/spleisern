@@ -124,7 +124,7 @@
 			<Button
 				variant="outline"
 				onclick={handleShare}
-				class="flex h-8 items-center gap-2 px-3 py-1 text-sm"
+				class="bg-background flex h-8 items-center gap-2 px-3 py-1 text-sm"
 			>
 				{#if copied}
 					<Check class="size-4" />
