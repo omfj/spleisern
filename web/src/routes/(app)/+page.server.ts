@@ -15,7 +15,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 				...getTableColumns(settlements),
 				memberCount: countDistinct(members.id),
 				productCount: countDistinct(products.id),
-				totalAmount: sql`COALESCE(SUM(${products.price}) / 100.0, 0)`.as('totalAmount')
+				totalAmount: sql`COALESCE(SUM(DISTINCT ${products.price}) / 100.0, 0)`.as('totalAmount')
 			})
 			.from(settlements)
 			.leftJoin(members, eq(members.settlementId, settlements.id))

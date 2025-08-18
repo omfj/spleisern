@@ -141,7 +141,7 @@
 		<!-- Products Section -->
 		<div class="space-y-4">
 			<h2 class="text-xl font-semibold">Products</h2>
-			<div class="border-3 overflow-hidden rounded-lg border-gray-300">
+			<div class="overflow-hidden rounded-lg border-3 border-gray-300">
 				<table class="w-full">
 					<thead class="border-b-3 border-gray-300 bg-gray-50">
 						<tr>
@@ -181,7 +181,7 @@
 			<h2 class="text-xl font-semibold">Member Breakdown</h2>
 			<div class="space-y-4">
 				{#each spleis.memberCosts as memberCost (memberCost.memberId)}
-					<div class="bg-background border-3 rounded-lg border-gray-300 p-4">
+					<div class="bg-background rounded-lg border-3 border-gray-300 p-4">
 						<div class="mb-3 flex items-center justify-between">
 							<h3 class="text-lg font-medium">{memberCost.memberName}</h3>
 							<span class="font-semibold text-emerald-600">
@@ -210,7 +210,7 @@
 	</div>
 
 	<!-- Summary Statistics -->
-	<div class="border-3 rounded-lg border-gray-300 bg-gray-50 p-6">
+	<div class="rounded-lg border-3 border-gray-300 bg-gray-50 p-6">
 		<h2 class="mb-4 text-xl font-semibold">Summary</h2>
 		<div class="grid gap-4 sm:grid-cols-3">
 			<div class="text-center">

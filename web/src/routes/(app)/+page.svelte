@@ -24,11 +24,11 @@
 
 	<!-- Statistics -->
 	<div class="grid gap-4 sm:grid-cols-2">
-		<div class="border-3 rounded-lg border-gray-300 bg-gray-50 p-6 text-center">
+		<div class="rounded-lg border-3 border-gray-300 bg-gray-50 p-6 text-center">
 			<div class="text-2xl font-bold text-emerald-600">{settlements.length}</div>
 			<div class="text-sm text-gray-600">Total Spleis</div>
 		</div>
-		<div class="border-3 rounded-lg border-gray-300 bg-gray-50 p-6 text-center">
+		<div class="rounded-lg border-3 border-gray-300 bg-gray-50 p-6 text-center">
 			<div class="text-2xl font-bold text-emerald-600">
 				{settlements.reduce((sum, s) => sum + s.totalAmount, 0).toFixed(2)} NOK
 			</div>
@@ -44,7 +44,7 @@
 		</div>
 
 		{#if settlements.length === 0}
-			<div class="border-3 rounded-lg border-gray-300 bg-gray-50 p-12 text-center">
+			<div class="rounded-lg border-3 border-gray-300 bg-gray-50 p-12 text-center">
 				<ScrollText class="mx-auto mb-4 size-12 text-gray-400" />
 				<Heading level={3} class="mb-2 text-gray-600">No Spleis Yet</Heading>
 				<Text class="mb-4 text-gray-500"
@@ -56,7 +56,7 @@
 				{#each settlements as settlement (settlement.id)}
 					<a
 						href="/spleis/{settlement.id}"
-						class="border-3 group block rounded-lg border-gray-300 bg-white p-6 transition-all hover:border-emerald-500 hover:shadow-md"
+						class="group block rounded-lg border-3 border-gray-300 bg-white p-6 transition-all hover:border-emerald-500 hover:shadow-md"
 					>
 						<div class="mb-3 flex items-start justify-between">
 							<div class="flex-1">

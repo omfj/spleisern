@@ -69,7 +69,7 @@
 	{:else}
 		<div class="space-y-6">
 			{#each spleis.products as product (product.id)}
-				<div class="border-3 bg-background rounded-lg border-gray-300 p-4">
+				<div class="bg-background rounded-lg border-3 border-gray-300 p-4">
 					<div class="mb-4 flex items-center justify-between">
 						<div>
 							<h3 class="text-lg font-medium">{product.name}</h3>
@@ -114,7 +114,7 @@
 			{/each}
 		</div>
 
-		<div class="border-3 rounded-lg border-gray-300 bg-gray-50 p-4">
+		<div class="rounded-lg border-3 border-gray-300 bg-gray-50 p-4">
 			<h3 class="mb-3 text-lg font-medium">Summary</h3>
 			<div class="space-y-2">
 				{#each spleis.members as member (member.id)}
